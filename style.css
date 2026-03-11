@@ -180,6 +180,10 @@ a:hover {
   gap: 16px;
 }
 
+.info-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .info-card {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
@@ -245,10 +249,35 @@ a:hover {
 .sticky-nav .container {
   overflow-x: auto;
   scrollbar-width: none;
+  position: relative;
 }
 
 .sticky-nav .container::-webkit-scrollbar {
   display: none;
+}
+
+/* Scroll hint: fade + chevron on right edge to indicate more content */
+@media (max-width: 699px) {
+  .sticky-nav::after {
+    content: '›';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+    background: linear-gradient(to right, transparent, rgba(15, 14, 10, 0.95));
+    pointer-events: none;
+    z-index: 101;
+    opacity: var(--scroll-hint-opacity, 1);
+    transition: opacity 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 8px;
+    color: var(--muted);
+    font-size: 20px;
+    font-weight: 300;
+  }
 }
 
 .nav-links {
@@ -823,8 +852,23 @@ footer {
 /* ============================================================
    RESPONSIVE
    ============================================================ */
+
+/* Code blocks: prevent horizontal overflow on mobile */
+pre[class*="language-"],
+pre {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+
+/* Prevent blobs from causing horizontal scroll */
+html {
+  overflow-x: hidden;
+}
+
 @media (max-width: 900px) {
-  .info-grid {
+  .info-grid,
+  .info-grid-3 {
     grid-template-columns: 1fr 1fr;
   }
 
@@ -838,7 +882,8 @@ footer {
 }
 
 @media (max-width: 640px) {
-  .info-grid {
+  .info-grid,
+  .info-grid-3 {
     grid-template-columns: 1fr 1fr;
   }
 
@@ -862,10 +907,58 @@ footer {
   .module-duration {
     display: none;
   }
+
+  .card {
+    padding: 24px 18px;
+  }
+
+  details summary {
+    padding: 16px 14px;
+    font-size: 14px;
+  }
+
+  .details-body {
+    padding: 0 14px 18px;
+  }
+
+  .nav-links li a {
+    padding: 14px 14px;
+    font-size: 13px;
+  }
+
+  .rcc-badge span {
+    font-size: 12px;
+  }
+
+  .info-card {
+    padding: 20px 18px 18px;
+    min-height: auto;
+  }
+
+  .info-card-value {
+    font-size: 15px;
+  }
 }
 
 @media (max-width: 420px) {
-  .info-grid {
+  .info-grid,
+  .info-grid-3 {
     grid-template-columns: 1fr;
+  }
+
+  .hero-title {
+    font-size: 28px;
+  }
+
+  .hero-tagline {
+    font-size: 28px;
+  }
+
+  .container {
+    padding: 0 16px;
+  }
+
+  .host-card {
+    padding: 24px 18px 18px;
   }
 }
