@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hotwire Native Workshop — Build Mobile Apps the Rails Way</title>
+
+  <!-- Prism.js — Tomorrow Night theme -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-ruby.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-swift.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-kotlin.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ambient gradient blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-eyebrow">
+        <a class="rcc-badge" href="https://www.rubycommunityconference.com/" target="_blank" rel="noopener">
+          <img src="images/rcc-logo.svg" alt="Ruby Community Conference" class="rcc-logo">
+          <span>Ruby Community Conference 2026</span>
+        </a>
+      </div>
+      <h1 class="hero-title">Hotwire Native</h1>
+      <p class="hero-tagline">Build Mobile Apps the Rails Way</p>
+      <p class="hero-sub">A hands-on workshop where you'll wrap a Kanban Board Rails app into native iOS and Android apps. No prior mobile development experience required.</p>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       INFO CARDS
+       ============================================================ -->
+  <section class="section-cards">
+    <div class="container">
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-icon">📅</div>
+          <div class="info-card-label">When</div>
+          <div class="info-card-value">March 13, 2026<br>10:00 AM</div>
+          <a class="info-card-link" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Hotwire+Native+Workshop+-+Build+Mobile+Apps+the+Rails+Way&amp;dates=20260313T090000Z/20260313T130000Z&amp;location=Archeion,+ul.+%C5%9Bw.+Filipa+23/6,+sala+PLATONA,+Krak%C3%B3w&amp;details=Hands-on+workshop+at+Ruby+Community+Conference+2026.+Build+native+iOS+%26+Android+apps+with+Rails+using+Hotwire+Native." target="_blank" rel="noopener">Add to Calendar ↗</a>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">📍</div>
+          <div class="info-card-label">Where</div>
+          <div class="info-card-value">Archeion, ul. św. Filipa 23/6<br>sala PLATONA, Cracow</div>
+          <a class="info-card-link" href="https://maps.google.com/?q=Archeion,+ul.+%C5%9Bw.+Filipa+23/6,+Krak%C3%B3w" target="_blank" rel="noopener">Get Directions ↗</a>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">⏱</div>
+          <div class="info-card-label">Duration</div>
+          <div class="info-card-value">~3–4 hours</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">🎟</div>
+          <div class="info-card-label">Seats</div>
+          <div class="info-card-value">12 participants</div>
+          <a class="info-card-link" href="https://luma.com/RubyCommunityConference2026" target="_blank" rel="noopener">Register on Luma ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       STICKY NAV
+       ============================================================ -->
+  <nav class="sticky-nav" aria-label="Workshop navigation">
+    <div class="container">
+      <ul class="nav-links">
+        <li><a href="#presentation">Slides</a></li>
+        <li><a href="#hosts">Your Hosts</a></li>
+        <li><a href="#about">About the Workshop</a></li>
+        <li><a href="#setup">Pre-Workshop Setup</a></li>
+        <li><a href="#modules">What We'll Build</a></li>
+        <li><a href="#resources">Resources</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ============================================================
+         SLIDES
+         ============================================================ -->
+    <section id="presentation" class="section">
+      <div class="container">
+        <div class="card slides-card">
+          <div class="slides-icon">📊</div>
+          <div class="slides-body">
+            <h3>Workshop Presentation</h3>
+            <p>We'll start the workshop with this presentation to cover the fundamentals before diving into code.</p>
+            <a class="btn btn-accent" href="https://docs.google.com/presentation/d/19QXCU6E8m-CW8ZrTKDjuZMh5inaMuDH7S92OIo3mXBI/edit?usp=sharing" target="_blank" rel="noopener">Open the Slides ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         YOUR HOSTS
+         ============================================================ -->
+    <section id="hosts" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Your Hosts</div>
+          <h2 class="section-title">Meet the Instructors</h2>
+        </div>
+        <div class="hosts-grid">
+          <div class="host-card">
+            <img src="images/alex.jpg" alt="Alexander Repnikov" class="host-img">
+            <h3>Alexander Repnikov</h3>
+            <div class="host-role">Ruby on Rails Developer at Housecall Pro</div>
+            <p class="host-bio">Ruby developer and community organizer. Co-organized Ruby Warsaw Community Conference. Active contributor to the Ruby ecosystem with interests spanning from web development to compiler design.</p>
+            <div class="host-links">
+              <a href="https://www.linkedin.com/in/alexander-repnikov/" target="_blank" rel="noopener">LinkedIn ↗</a>
+              <a href="https://github.com/arepnikov" target="_blank" rel="noopener">GitHub ↗</a>
+            </div>
+          </div>
+          <div class="host-card">
+            <img src="images/sebastian.jpg" alt="Sebastian Tekieli" class="host-img">
+            <h3>Sebastian Tekieli</h3>
+            <div class="host-role">Technical Project Manager at Visuality</div>
+            <p class="host-bio">20+ years building and scaling web and SaaS applications. Former CTO at Punkta and DataFeedWatch. Passionate about Rails, AI agents, and shipping products fast.</p>
+            <div class="host-links">
+              <a href="https://www.linkedin.com/in/sebastian-tekieli/" target="_blank" rel="noopener">LinkedIn ↗</a>
+              <a href="https://github.com/qiun" target="_blank" rel="noopener">GitHub ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ABOUT
+         ============================================================ -->
+    <section id="about" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">About the Workshop</div>
+          <h2 class="section-title">Hotwire Native, Explained</h2>
+        </div>
+        <div class="about-prose">
+          <p>Hotwire Native lets you wrap your existing Rails web app in a native mobile shell, giving users a fully native experience on iOS and Android — <strong>without rewriting your app in Swift or Kotlin.</strong></p>
+          <p>The philosophy is simple: <strong>"Content is all web. Navigation is all native."</strong> Your server renders HTML as usual. The native shell handles navigation bars, gestures, transitions, and platform-specific UI elements.</p>
+          <p>During the workshop you'll build around a <strong>Kanban Board app</strong> — built with Rails 8, Turbo Frames, Turbo Streams, Action Cable, and SortableJS drag-and-drop. The web app features boards, columns, and cards with real-time updates. We'll progressively wrap it in native iOS and Android shells, enhance it with Bridge Components, and add fully native screens.</p>
+          <div class="callout">
+            <h4>Who is this for?</h4>
+            <p>Rails developers curious about mobile. You don't need any iOS or Android experience. If you can build a Rails app with Hotwire, you already have 90% of the skills needed.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         PRE-WORKSHOP SETUP
+         ============================================================ -->
+    <section id="setup" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Pre-Workshop Setup</div>
+          <h2 class="section-title">Get Ready Before You Arrive</h2>
+          <p class="section-sub">Please complete these steps before the workshop. Installing Xcode and Android Studio can take a while, so don't leave it for the morning of!</p>
+        </div>
+
+        <div class="details-list">
+
+          <!-- Step 1: Ruby -->
+          <details>
+            <summary>
+              <span class="setup-num">1</span>
+              Install Ruby 3.4.8
+            </summary>
+            <div class="details-body">
+              <details>
+                <summary>macOS</summary>
+                <div class="details-body">
+                  <h5>First, install system dependencies</h5>
+                  <pre><code class="language-bash">brew install openssl@3 readline libyaml gmp</code></pre>
+
+                  <details>
+                    <summary>Option A: rbenv (recommended)</summary>
+                    <div class="details-body">
+                      <pre><code class="language-bash">brew install rbenv ruby-build
+echo 'eval "$(rbenv init - zsh)"' >> ~/.zshrc
+source ~/.zshrc
+rbenv install 3.4.8
+ruby --version # should show: ruby 3.4.8</code></pre>
+                      <p>rbenv auto-activates Ruby 3.4.8 when you <code>cd</code> into a project with <code>.ruby-version</code>.</p>
+                    </div>
+                  </details>
+
+                  <details>
+                    <summary>Option B: rvm</summary>
+                    <div class="details-body">
+                      <pre><code class="language-bash">brew install gnupg
+gpg --keyserver keyserver.ubuntu.com --recv-keys \
+  409B6B1796C275462A1703113804BB82D39DC0E3 \
+  7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+
+\curl -sSL https://get.rvm.io | bash -s stable
+source ~/.rvm/scripts/rvm
+
+rvm install ruby-3.4.8 --with-openssl-dir=$(brew --prefix)/opt/openssl@3
+rvm --default use 3.4.8
+ruby --version # should show: ruby 3.4.8</code></pre>
+                    </div>
+                  </details>
+                </div>
+              </details>
+
+              <details>
+                <summary>Linux (Ubuntu / Debian)</summary>
+                <div class="details-body">
+                  <h5>First, install system dependencies</h5>
+                  <pre><code class="language-bash">sudo apt update
+sudo apt install -y build-essential libssl-dev libreadline-dev \
+  zlib1g-dev libyaml-dev libgmp-dev libffi-dev libsqlite3-dev</code></pre>
+
+                  <details>
+                    <summary>Option A: rbenv (recommended)</summary>
+                    <div class="details-body">
+                      <pre><code class="language-bash">git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+source ~/.bashrc
+
+git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+
+rbenv install 3.4.8
+ruby --version # should show: ruby 3.4.8</code></pre>
+                    </div>
+                  </details>
+
+                  <details>
+                    <summary>Option B: rvm</summary>
+                    <div class="details-body">
+                      <pre><code class="language-bash">gpg --keyserver keyserver.ubuntu.com --recv-keys \
+  409B6B1796C275462A1703113804BB82D39DC0E3 \
+  7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+
+\curl -sSL https://get.rvm.io | bash -s stable
+source ~/.rvm/scripts/rvm
+
+rvm install ruby-3.4.8
+rvm --default use 3.4.8
+ruby --version # should show: ruby 3.4.8</code></pre>
+                    </div>
+                  </details>
+                </div>
+              </details>
+
+              <h4>Troubleshooting</h4>
+              <ul>
+                <li>Build fails on macOS? Run <code>brew install openssl@3 readline libyaml gmp</code></li>
+                <li>rbenv version not found? Run <code>brew upgrade ruby-build</code> and retry</li>
+                <li>On Linux, make sure you have <code>build-essential</code> installed</li>
+              </ul>
+            </div>
+          </details>
+
+          <!-- Step 2: Rails App -->
+          <details>
+            <summary>
+              <span class="setup-num">2</span>
+              Clone &amp; Run the Rails Application
+            </summary>
+            <div class="details-body">
+              <p>Requires SQLite 3 and Redis.</p>
+              <pre><code class="language-bash">git clone https://github.com/arepnikov/hotwire-native-workshop-rails.git
+cd hotwire-native-workshop-rails
+bundle install
+rails db:setup
+bin/dev</code></pre>
+              <p>Visit <code>http://localhost:3000</code> to verify it works.</p>
+            </div>
+          </details>
+
+          <!-- Step 3: iOS -->
+          <details>
+            <summary>
+              <span class="setup-num">3</span>
+              Set Up the iOS Project (Xcode)
+            </summary>
+            <div class="details-body">
+              <p>Requires <strong>Xcode 15+</strong> — download from the Mac App Store.</p>
+              <pre><code class="language-bash">git clone https://github.com/arepnikov/hotwire-native-workshop-ios.git</code></pre>
+              <p>Open the project in Xcode, let it resolve Swift Package Manager dependencies, then build and run on an iPhone simulator.</p>
+            </div>
+          </details>
+
+          <!-- Step 4: Android -->
+          <details>
+            <summary>
+              <span class="setup-num">4</span>
+              Set Up the Android Project (Android Studio)
+            </summary>
+            <div class="details-body">
+              <p>Requires <strong>Android Studio</strong> — download from <a href="https://developer.android.com/studio" target="_blank" rel="noopener">developer.android.com</a>. Works on macOS, Windows, and Linux.</p>
+              <pre><code class="language-bash">git clone https://github.com/arepnikov/hotwire-native-workshop-android.git</code></pre>
+              <p>Open the project, let Gradle sync dependencies, then run on an Android emulator.</p>
+            </div>
+          </details>
+
+        </div>
+
+        <!-- Pre-workshop checklist -->
+        <h3 style="margin-top: 48px; margin-bottom: 4px; font-size: 18px;">Checklist before the workshop</h3>
+        <ul class="checklist">
+          <li>Ruby 3.4.8 installed (<code>ruby --version</code>)</li>
+          <li>Rails app runs at <code>localhost:3000</code></li>
+          <li>Xcode installed and iOS project builds on a simulator</li>
+          <li>Android Studio installed and Android project builds on an emulator</li>
+          <li>Git installed and all repos cloned</li>
+        </ul>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         WHAT WE'LL BUILD
+         ============================================================ -->
+    <section id="modules" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Workshop Modules</div>
+          <h2 class="section-title">What We'll Build</h2>
+          <p class="section-sub">Each module builds on the previous one. If you don't finish everything during the workshop, use the code examples below to continue on your own.</p>
+        </div>
+
+        <div class="details-list">
+
+          <!-- Module 1 -->
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">1</span>
+                <span class="module-title">Introduction &amp; Architecture</span>
+                <span class="module-duration">~20 min</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Understand how Hotwire Native works and why it exists. We'll look at the architecture, the Kanban Board app we'll be wrapping, and see how production apps like Basecamp and HEY Mail use it.</p>
+              <ul>
+                <li>The core philosophy: <em>"Content is all web. Navigation is all native."</em> — your server renders HTML, the native shell handles navigation bars, gestures, and transitions</li>
+                <li>The three tiers of native integration: (1) pure web screens in a native shell, (2) Bridge Components that replace individual web elements with native ones, (3) fully native screens for platform APIs</li>
+                <li>How it compares to React Native and Flutter — when a hybrid approach wins over full-native rewrites</li>
+                <li>The Hotwire ecosystem: how Turbo, Stimulus, and Hotwire Native fit together</li>
+                <li>Real-world case studies: Basecamp, HEY Mail, The StoryGraph (millions of users, small teams)</li>
+              </ul>
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                You understand the architecture and can explain to your team why Hotwire Native might be the right choice for your project.
+              </div>
+            </div>
+          </details>
+
+          <!-- Module 2 -->
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">2</span>
+                <span class="module-title">First Launch — iOS &amp; Android</span>
+                <span class="module-duration">~30 min</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Get the Kanban Board Rails app and both native shells running on simulators. This is the "aha!" moment — your existing web app with boards, columns, and cards running inside a native shell with native navigation.</p>
+              <ul>
+                <li>Start the Kanban Board Rails app (Turbo Frames, Turbo Streams, Action Cable, SortableJS) and verify it works in a browser</li>
+                <li>Open the iOS project in Xcode — understand the project structure and Swift Package Manager dependencies</li>
+                <li>The Navigator: the central object that manages navigation, sessions, and the back stack</li>
+                <li>Open the Android project in Android Studio — Gradle setup and HotwireActivity</li>
+                <li>Networking: localhost on iOS simulator vs. 10.0.2.2 on Android emulator</li>
+              </ul>
+
+              <span class="code-label">SceneDelegate.swift — iOS entry point</span>
+              <pre><code class="language-swift">import HotwireNative
+
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    var window: UIWindow?
+
+    private let navigator = Navigator(
+        configuration: .init(
+            name: "main",
+            startLocation: URL(string: "http://localhost:3000")!
+        )
+    )
+
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options: UIScene.ConnectionOptions) {
+        guard let windowScene = scene as? UIWindowScene else { return }
+        window = UIWindow(windowScene: windowScene)
+        window?.rootViewController = navigator.rootViewController
+        window?.makeKeyAndVisible()
+        navigator.start()
+    }
+}</code></pre>
+
+              <span class="code-label">MainActivity.kt — Android entry point</span>
+              <pre><code class="language-kotlin">import dev.hotwire.core.config.Hotwire
+import dev.hotwire.navigation.activities.HotwireActivity
+import dev.hotwire.navigation.navigator.NavigatorConfiguration
+
+class MainActivity : HotwireActivity() {
+    override fun navigatorConfigurations() = listOf(
+        NavigatorConfiguration(
+            name = "main",
+            startLocation = "http://10.0.2.2:3000",
+            navigatorHostId = R.id.navigator_host
+        )
+    )
+}</code></pre>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                Both apps launch on simulators, showing the Kanban Board app with native navigation transitions — boards, columns, and drag-and-drop cards all working out of the box.
+              </div>
+            </div>
+          </details>
+
+          <!-- Module 3 -->
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">3</span>
+                <span class="module-title">Path Configuration</span>
+                <span class="module-duration">~30 min</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Path Configuration is the "control plane" of Hotwire Native. It's a JSON file that maps URL patterns to native behaviors — deciding whether a screen should push, present as a modal, enable pull-to-refresh, and more. The best part: you can serve it remotely from your Rails app, so you can change routing behavior without an App Store release.</p>
+              <ul>
+                <li>Structure: a JSON file with "settings" (global) and "rules" (URL pattern matching)</li>
+                <li>Rules are processed top-to-bottom — later rules override earlier ones for the same URL</li>
+                <li>Key properties: <code>context</code> (default/modal), <code>presentation</code> (push/pop/replace/refresh), <code>pull_to_refresh_enabled</code></li>
+                <li>Platform-specific properties: <code>view_controller</code> and <code>modal_style</code> (iOS), <code>uri</code> (Android)</li>
+                <li>Local vs. remote path configuration — serve it from your Rails app for hot updates</li>
+              </ul>
+
+              <span class="code-label">path-configuration.json</span>
+              <pre><code class="language-json">{
+  "settings": {},
+  "rules": [
+    {
+      "patterns": [".*"],
+      "properties": {
+        "context": "default",
+        "uri": "hotwire://fragment/web",
+        "pull_to_refresh_enabled": true
+      }
+    },
+    {
+      "patterns": ["/new$", "/edit$"],
+      "properties": {
+        "context": "modal",
+        "uri": "hotwire://fragment/web/modal/sheet",
+        "pull_to_refresh_enabled": false
+      }
+    },
+    {
+      "patterns": ["/boards$"],
+      "properties": {
+        "pull_to_refresh_enabled": true
+      }
+    }
+  ]
+}</code></pre>
+
+              <h4>Serving path configuration from your Rails app</h4>
+
+              <span class="code-label">config/routes.rb</span>
+              <pre><code class="language-ruby">get "/configurations/android_v1", to: "configurations#android"
+get "/configurations/ios_v1",     to: "configurations#ios"</code></pre>
+
+              <span class="code-label">app/controllers/configurations_controller.rb</span>
+              <pre><code class="language-ruby">class ConfigurationsController &lt; ApplicationController
+  def android
+    render json: Rails.root.join("config/android_v1.json").read
+  end
+
+  def ios
+    render json: Rails.root.join("config/ios_v1.json").read
+  end
+end</code></pre>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                Creating new cards and editing boards opens as native modal sheets, boards list supports pull-to-refresh — all controlled by a JSON file served from Rails.
+              </div>
+            </div>
+          </details>
+
+          <!-- Module 4 -->
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">4</span>
+                <span class="module-title">Adapting the Web UI</span>
+                <span class="module-duration">~20 min</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>When your Rails app runs inside a native shell, you don't need web navigation bars, footers, or cookie banners. Rails provides helpers to detect the native context and conditionally render content.</p>
+              <ul>
+                <li>The <code>turbo_native_app?</code> helper — detect if the request comes from a Hotwire Native app</li>
+                <li>Hiding web-only chrome: navbars, footers, cookie banners, browser-specific CTAs</li>
+                <li>Creating a dedicated layout for native app requests</li>
+                <li>CSS adjustments: safe area insets, touch-friendly tap targets, viewport considerations</li>
+                <li>Platform-specific rendering with User-Agent detection (iOS vs Android)</li>
+              </ul>
+
+              <span class="code-label">app/views/layouts/application.html.erb</span>
+              <pre><code class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;%= stylesheet_link_tag "application" %&gt;
+  &lt;%= javascript_include_tag "application", "data-turbo-track": "reload" %&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;% unless turbo_native_app? %&gt;
+    &lt;%= render "shared/navbar" %&gt;
+  &lt;% end %&gt;
+
+  &lt;main class="&lt;%= turbo_native_app? ? 'native-app' : 'web-app' %&gt;"&gt;
+    &lt;%= yield %&gt;
+  &lt;/main&gt;
+
+  &lt;% unless turbo_native_app? %&gt;
+    &lt;%= render "shared/footer" %&gt;
+  &lt;% end %&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+              <span class="code-label">Native-specific styles</span>
+              <pre><code class="language-css">.native-app {
+  /* Remove extra padding that web navbar would need */
+  padding-top: 0;
+
+  /* Respect iOS safe areas (notch, home indicator) */
+  padding-bottom: env(safe-area-inset-bottom);
+
+  /* Larger touch targets for mobile */
+  --tap-target-size: 44px;
+}</code></pre>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                Your app looks clean inside the native shell — no duplicate navigation, proper spacing, mobile-optimized touch targets.
+              </div>
+            </div>
+          </details>
+
+          <!-- Module 5 -->
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">5</span>
+                <span class="module-title">Bridge Components</span>
+                <span class="module-duration">~45 min</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>This is the power feature of Hotwire Native. Bridge Components let you replace individual web UI elements with their native counterparts. For example, the Kanban Board's "Save" button on card/board forms becomes a native toolbar button. The web side sends a message via a Stimulus controller, the native side renders a platform-native widget, and callbacks flow back to the web.</p>
+              <ul>
+                <li>Architecture: a Stimulus-based <code>BridgeComponent</code> on the web paired with a native Swift/Kotlin counterpart</li>
+                <li><code>BridgeElement</code>: reads <code>data-bridge-title</code>, <code>aria-label</code>, or text content from your HTML</li>
+                <li>The message flow: <code>this.send(event, data, callback)</code> from web to native, native triggers the callback</li>
+                <li><code>data-bridge-*</code> attributes for controlling behavior from HTML</li>
+                <li>Building a complete bridge component end-to-end: web JS + Swift + Kotlin</li>
+              </ul>
+
+              <span class="code-label">app/javascript/controllers/bridge/form_controller.js</span>
+              <pre><code class="language-javascript">import { BridgeComponent, BridgeElement } from "@hotwired/hotwire-native-bridge"
+
+export default class extends BridgeComponent {
+  static component = "form"
+  static targets = ["submit"]
+
+  submitTargetConnected(target) {
+    const submitButton = new BridgeElement(target)
+    const submitTitle = submitButton.title
+
+    // Send message to native side with button title
+    // The callback fires when the native button is tapped
+    this.send("connect", { submitTitle }, () =&gt; {
+      target.click()
+    })
+  }
+}</code></pre>
+
+              <span class="code-label">HTML — annotate your form</span>
+              <pre><code class="language-markup">&lt;%= form_with(model: @post) do |form| %&gt;
+  &lt;div data-controller="bridge--form"&gt;
+    &lt;%= form.text_field :title, class: "form-input" %&gt;
+    &lt;%= form.text_area :body, class: "form-textarea" %&gt;
+
+    &lt;%= form.submit "Save Post",
+      data: {
+        bridge__form_target: "submit",
+        bridge_title: "Save"
+      },
+      class: "btn-primary" %&gt;
+  &lt;/div&gt;
+&lt;% end %&gt;</code></pre>
+
+              <span class="code-label">FormComponent.swift — iOS</span>
+              <pre><code class="language-swift">import HotwireNative
+import UIKit
+
+final class FormComponent: BridgeComponent {
+    override class var name: String { "form" }
+
+    override func onReceive(message: Message) {
+        guard let event = Event(rawValue: message.event) else { return }
+
+        switch event {
+        case .connect:
+            handleConnect(message: message)
+        }
+    }
+
+    private func handleConnect(message: Message) {
+        guard let data: MessageData = message.data() else { return }
+
+        let action = UIAction { [unowned self] _ in
+            self.reply(to: "connect")
+        }
+
+        let item = UIBarButtonItem(
+            title: data.submitTitle,
+            primaryAction: action
+        )
+        viewController?.navigationItem.rightBarButtonItem = item
+    }
+}
+
+private extension FormComponent {
+    enum Event: String {
+        case connect
+    }
+
+    struct MessageData: Decodable {
+        let submitTitle: String
+    }
+}</code></pre>
+
+              <span class="code-label">FormComponent.kt — Android</span>
+              <pre><code class="language-kotlin">import dev.hotwire.core.bridge.BridgeComponent
+import dev.hotwire.core.bridge.BridgeDelegate
+import dev.hotwire.core.bridge.Message
+
+class FormComponent(
+    name: String,
+    private val delegate: BridgeDelegate&lt;HotwireDestination&gt;
+) : BridgeComponent&lt;HotwireDestination&gt;(name, delegate) {
+
+    override fun onReceive(message: Message) {
+        when (message.event) {
+            "connect" -&gt; handleConnect(message)
+        }
+    }
+
+    private fun handleConnect(message: Message) {
+        val data = message.data&lt;MessageData&gt;() ?: return
+
+        delegate.destination.toolbarForNavigation()?.let { toolbar -&gt;
+            toolbar.menu.clear()
+            toolbar.menu.add(data.submitTitle).apply {
+                setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                setOnMenuItemClickListener {
+                    replyTo("connect")
+                    true
+                }
+            }
+        }
+    }
+
+    @Serializable
+    data class MessageData(
+        @SerialName("submitTitle") val submitTitle: String
+    )
+}</code></pre>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                A web form's submit button is replaced with a native toolbar button on both platforms. Tapping it submits the web form. Users see a native UI, but the logic lives in your Rails app.
+              </div>
+            </div>
+          </details>
+
+          <!-- Module 6 -->
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">6</span>
+                <span class="module-title">Native Screens</span>
+                <span class="module-duration">~30 min</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Some features genuinely need platform APIs — maps, camera, Bluetooth, health data. For these, Hotwire Native lets you register fully native screens that activate for specific URL patterns. The native screen gets the full power of SwiftUI or Jetpack Compose while staying integrated with your app's navigation.</p>
+              <ul>
+                <li>When to go native: the decision framework (web-first → bridge → native)</li>
+                <li>Registering native screens via the path configuration <code>view_controller</code> (iOS) and <code>uri</code> (Android) properties</li>
+                <li>Passing data from the web session to native screens</li>
+                <li>Navigating back from native screens to web screens seamlessly</li>
+                <li>Mixing native and web screens in the same navigation stack</li>
+              </ul>
+
+              <span class="code-label">path-configuration.json — route /map to a native screen</span>
+              <pre><code class="language-json">{
+  "patterns": ["/map$"],
+  "properties": {
+    "context": "default",
+    "uri": "hotwire://fragment/map",
+    "view_controller": "map"
+  }
+}</code></pre>
+
+              <span class="code-label">MapView.swift — Native map screen with SwiftUI</span>
+              <pre><code class="language-swift">import SwiftUI
+import MapKit
+import HotwireNative
+
+struct MapView: View {
+    let location: CLLocationCoordinate2D
+
+    var body: some View {
+        Map(initialPosition: .region(
+            MKCoordinateRegion(
+                center: location,
+                span: MKCoordinateSpan(
+                    latitudeDelta: 0.05,
+                    longitudeDelta: 0.05
+                )
+            )
+        )) {
+            Marker("Location", coordinate: location)
+        }
+        .ignoresSafeArea()
+    }
+}
+
+// Register in your Navigator configuration:
+// Hotwire.registerRouteDecisionHandler("map") { url in
+//     let mapVC = UIHostingController(rootView: MapView(...))
+//     return mapVC
+// }</code></pre>
+
+              <span class="code-label">MapFragment.kt — Native map screen with Jetpack Compose</span>
+              <pre><code class="language-kotlin">import dev.hotwire.navigation.fragments.HotwireFragment
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+
+@AndroidEntryPoint
+class MapFragment : HotwireFragment() {
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                GoogleMap(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Marker(
+                        state = MarkerState(position = LatLng(50.05, 19.93)),
+                        title = "Workshop Location"
+                    )
+                }
+            }
+        }
+    }
+}
+
+// Register in nav_graph.xml:
+// &lt;fragment android:name=".MapFragment"
+//     android:id="@+id/map_fragment" /&gt;</code></pre>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                A specific URL in your app opens a fully native map screen instead of a web view. Users get native performance and platform APIs while the rest of the app stays web-based.
+              </div>
+            </div>
+          </details>
+
+          <!-- Module 7 -->
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">7</span>
+                <span class="module-title">Polishing &amp; Next Steps</span>
+                <span class="module-duration">~20 min</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Wrap up with navigation enhancements, error handling patterns, and a roadmap for taking your app to production — including tab bars, push notifications, and app store deployment.</p>
+              <ul>
+                <li>Adding a native tab bar with multiple Navigators (one per tab)</li>
+                <li>Error handling: showing native error screens when the server is unreachable</li>
+                <li>Authentication flows: handling sign-in/sign-out with cookies and sessions</li>
+                <li>Push notifications overview: APNs (iOS) and FCM (Android)</li>
+                <li>Deployment: TestFlight for beta testing, Google Play Console, CI/CD pipelines</li>
+              </ul>
+
+              <span class="code-label">SceneDelegate.swift — Tab bar with multiple navigators</span>
+              <pre><code class="language-swift">import HotwireNative
+
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    var window: UIWindow?
+
+    private let rootURL = URL(string: "https://your-app.dev")!
+
+    private lazy var homeNavigator = Navigator(
+        configuration: .init(name: "home", startLocation: rootURL)
+    )
+
+    private lazy var profileNavigator = Navigator(
+        configuration: .init(
+            name: "profile",
+            startLocation: rootURL.appendingPathComponent("/profile")
+        )
+    )
+
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options: UIScene.ConnectionOptions) {
+        guard let windowScene = scene as? UIWindowScene else { return }
+
+        let tabBar = UITabBarController()
+
+        homeNavigator.rootViewController.tabBarItem = UITabBarItem(
+            title: "Home",
+            image: UIImage(systemName: "house"),
+            tag: 0
+        )
+        profileNavigator.rootViewController.tabBarItem = UITabBarItem(
+            title: "Profile",
+            image: UIImage(systemName: "person"),
+            tag: 1
+        )
+
+        tabBar.viewControllers = [
+            homeNavigator.rootViewController,
+            profileNavigator.rootViewController
+        ]
+
+        window = UIWindow(windowScene: windowScene)
+        window?.rootViewController = tabBar
+        window?.makeKeyAndVisible()
+
+        homeNavigator.start()
+        profileNavigator.start()
+    }
+}</code></pre>
+
+              <span class="code-label">MainActivity.kt — Tab bar with multiple navigators</span>
+              <pre><code class="language-kotlin">class MainActivity : HotwireActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val bottomNav = findViewById&lt;BottomNavigationView&gt;(R.id.bottom_navigation)
+
+        val homeNavigator = Navigator(
+            name = "home",
+            startLocation = "https://your-app.dev",
+            containerId = R.id.home_nav_host
+        )
+
+        val profileNavigator = Navigator(
+            name = "profile",
+            startLocation = "https://your-app.dev/profile",
+            containerId = R.id.profile_nav_host
+        )
+
+        bottomNav.setOnItemSelectedListener { item -&gt;
+            when (item.itemId) {
+                R.id.nav_home    -&gt; { showNavigator(homeNavigator); true }
+                R.id.nav_profile -&gt; { showNavigator(profileNavigator); true }
+                else             -&gt; false
+            }
+        }
+
+        homeNavigator.start()
+        profileNavigator.start()
+    }
+}</code></pre>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                You have a clear path from workshop prototype to production app — with tab navigation, error handling, and deployment strategy.
+              </div>
+            </div>
+          </details>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         RESOURCES
+         ============================================================ -->
+    <section id="resources" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Resources</div>
+          <h2 class="section-title">Further Reading</h2>
+        </div>
+        <div class="resources-grid">
+          <a class="resource-card" href="https://native.hotwired.dev/" target="_blank" rel="noopener">
+            <h4>Official Documentation ↗</h4>
+            <p>Hotwire Native docs — the primary reference</p>
+          </a>
+          <a class="resource-card" href="https://github.com/arepnikov/hotwire-native-workshop-rails" target="_blank" rel="noopener">
+            <h4>Workshop Rails Repo ↗</h4>
+            <p>The Rails application we'll use during the workshop</p>
+          </a>
+          <a class="resource-card" href="https://github.com/arepnikov/hotwire-native-workshop-ios" target="_blank" rel="noopener">
+            <h4>Workshop iOS Repo ↗</h4>
+            <p>iOS starter project with Hotwire Native</p>
+          </a>
+          <a class="resource-card" href="https://github.com/arepnikov/hotwire-native-workshop-android" target="_blank" rel="noopener">
+            <h4>Workshop Android Repo ↗</h4>
+            <p>Android starter project with Hotwire Native</p>
+          </a>
+          <a class="resource-card" href="https://masilotti.com/launching-hotwire-native-by-example/" target="_blank" rel="noopener">
+            <h4>Hotwire Native by Example ↗</h4>
+            <p>Joe Masilotti's tutorial series — great for post-workshop learning</p>
+          </a>
+          <a class="resource-card" href="https://www.rubycommunityconference.com/" target="_blank" rel="noopener">
+            <h4>Ruby Community Conference ↗</h4>
+            <p>Conference schedule, tickets, and other workshops</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer>
+    <div class="container">
+      <h2 class="footer-title">Part of Ruby Community Conference 2026</h2>
+      <p class="footer-sub">March 13, 2026 — Cracow, Poland. Workshops are free for conference ticket holders.</p>
+      <div class="footer-cta">
+        <a class="btn btn-accent" href="https://luma.com/RubyCommunityConference2026" target="_blank" rel="noopener">Get your conference ticket ↗</a>
+      </div>
+      <p class="footer-credit">Hotwire Native Workshop · Ruby Community Conference 2026 · Organized by <a href="https://www.visuality.pl/" target="_blank" rel="noopener">Visuality</a></p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

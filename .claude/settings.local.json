@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:websiteinit.com)",
+      "Bash(mkdir:*)"
+    ]
+  }
+}
