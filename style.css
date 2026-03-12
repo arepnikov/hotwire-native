@@ -743,6 +743,95 @@ code[class*="language-"] {
 }
 
 /* ============================================================
+   SIDE BADGES
+   ============================================================ */
+.side-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  vertical-align: middle;
+  margin-left: 6px;
+  flex-shrink: 0;
+}
+
+.side-badge--rails {
+  background: rgba(204, 52, 45, 0.12);
+  color: #e57373;
+  border: 1px solid rgba(204, 52, 45, 0.25);
+}
+
+.side-badge--android {
+  background: rgba(61, 220, 132, 0.1);
+  color: #6fcf97;
+  border: 1px solid rgba(61, 220, 132, 0.2);
+}
+
+/* ============================================================
+   SCREENSHOT DETAILS
+   ============================================================ */
+.screenshot-details {
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  margin: 12px 0 16px;
+  background: rgba(255,255,255,0.02);
+  overflow: hidden;
+}
+
+.screenshot-details > summary {
+  padding: 10px 16px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--muted) !important;
+}
+
+.screenshot-body {
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px 16px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--glass-border);
+}
+
+.screenshot-body img {
+  max-width: 280px;
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid var(--glass-border);
+}
+
+/* ============================================================
+   CHECKPOINT
+   ============================================================ */
+.checkpoint {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(218, 119, 86, 0.06);
+  border: 1px solid rgba(218, 119, 86, 0.2);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-top: 24px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.checkpoint-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.checkpoint code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent);
+}
+
+/* ============================================================
    CHECKLIST
    ============================================================ */
 .checklist {
