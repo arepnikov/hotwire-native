@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Android Workshop — Hotwire Native</title>
+
+  <!-- Prism.js — Tomorrow Night theme -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-kotlin.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-groovy.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-toml.min.js"></script>
+
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+  <!-- Ambient gradient blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-eyebrow">
+        <a class="rcc-badge" href="https://www.rubycommunityconference.com/" target="_blank" rel="noopener">
+          <img src="../images/rcc-logo.svg" alt="Ruby Community Conference" class="rcc-logo">
+          <span>Ruby Community Conference 2026</span>
+        </a>
+      </div>
+      <h1 class="hero-title">Android Workshop</h1>
+      <p class="hero-tagline">Hotwire Native for Android — Step by Step</p>
+      <p class="hero-sub">Follow along with each step to build a fully working Hotwire Native Android app wrapping the Kanban Board Rails application. Each step maps directly to a commit in the <a href="https://github.com/arepnikov/hotwire-native-workshop-android" target="_blank" rel="noopener" style="color: var(--accent);">Android repository</a>.</p>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       STICKY NAV
+       ============================================================ -->
+  <nav class="sticky-nav" aria-label="Workshop navigation">
+    <div class="container">
+      <ul class="nav-links">
+        <li><a href="#step1">1. Project Init</a></li>
+        <li><a href="#step2">2. Hotwire Setup</a></li>
+        <li><a href="#step3">3. Path Config</a></li>
+        <li><a href="#step4">4. App Config</a></li>
+        <li><a href="#step5">5. Fragments</a></li>
+        <li><a href="#step6">6. Organize</a></li>
+        <li><a href="#step7">7. Environments</a></li>
+        <li><a href="#step8">8. HTTP Access</a></li>
+        <li><a href="#step9">9. Serialization</a></li>
+        <li><a href="#step10">10. Local Mode</a></li>
+        <li><a href="#step11">11. Button Bridge</a></li>
+        <li><a href="#step12">12. Button Events</a></li>
+        <li><a href="#step13">13. Modal Config</a></li>
+        <li><a href="#step14">14. Form Bridge</a></li>
+        <li><a href="#step15">15. Form Complete</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ============================================================
+         INTRO
+         ============================================================ -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Before You Start</div>
+          <h2 class="section-title">Prerequisites</h2>
+        </div>
+        <div class="about-prose">
+          <p>Make sure you have completed the <a href="./#setup">Pre-Workshop Setup</a> — Android Studio installed, the Rails app running at <code>localhost:3000</code>, and the Android repo cloned.</p>
+          <div class="callout">
+            <h4>Branch structure</h4>
+            <p>The Android repo has 4 branches that build on each other:</p>
+            <ul>
+              <li><strong>master</strong> — Steps 1–9: Project setup, Hotwire config, path configuration, environments, serialization</li>
+              <li><strong>button-component</strong> — Steps 10–12: Switch to local, ButtonComponent bridge</li>
+              <li><strong>new-board-modal</strong> — Step 13: Path configuration for modals and replace presentation</li>
+              <li><strong>form-component</strong> — Steps 14–15: FormComponent bridge with submit enable/disable</li>
+            </ul>
+            <p>You can check out any branch to see the state of the app at that point: <code>git checkout button-component</code></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 1: init
+         ============================================================ -->
+    <section id="step1" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 1 · Branch: master</div>
+          <h2 class="section-title">Create the Android Project</h2>
+          <p class="section-sub">Commit: <code>init</code></p>
+        </div>
+        <div class="details-list">
+          <details open>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">1</span>
+                <span class="module-title">New Android Project from Android Studio</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Create a new project in Android Studio:</p>
+              <ul>
+                <li>Open Android Studio &rarr; <strong>New Project</strong> &rarr; <strong>Empty Views Activity</strong></li>
+                <li>Name: <code>Hotwire Native Workshop</code></li>
+                <li>Package name: <code>com.example.hotwirenativeworkshop</code></li>
+                <li>Language: <strong>Kotlin</strong></li>
+                <li>Minimum SDK: <strong>API 31</strong></li>
+                <li>Build configuration language: <strong>Kotlin DSL</strong></li>
+              </ul>
+
+              <p>This generates the standard scaffold: <code>build.gradle.kts</code>, <code>MainActivity.kt</code>, layout files, Gradle wrapper, etc.</p>
+
+              <span class="code-label">app/build.gradle.kts (generated)</span>
+              <pre><code class="language-kotlin">plugins {
+    alias(libs.plugins.android.application)
+}
+
+android {
+    namespace = "com.example.hotwirenativeworkshop"
+    compileSdk {
+        version = release(36) {
+            minorApiLevel = 1
+        }
+    }
+
+    defaultConfig {
+        applicationId = "com.example.hotwirenativeworkshop"
+        minSdk = 31
+        targetSdk = 36
+        versionCode = 1
+        versionName = "1.0"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+}
+
+dependencies {
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+}</code></pre>
+
+              <span class="code-label">gradle/libs.versions.toml (generated)</span>
+              <pre><code class="language-toml">[versions]
+agp = "9.0.1"
+coreKtx = "1.17.0"
+junit = "4.13.2"
+junitVersion = "1.3.0"
+espressoCore = "3.7.0"
+appcompat = "1.7.1"
+material = "1.13.0"
+activity = "1.12.4"
+constraintlayout = "2.2.1"
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }</code></pre>
+
+              <span class="code-label">app/src/main/java/.../MainActivity.kt (generated)</span>
+              <pre><code class="language-kotlin">package com.example.hotwirenativeworkshop
+
+import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_main)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+    }
+}</code></pre>
+
+              <span class="code-label">app/src/main/res/layout/activity_main.xml (generated)</span>
+              <pre><code class="language-markup">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"&gt;
+
+    &lt;TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" /&gt;
+
+&lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;</code></pre>
+
+              <p>Also add <code>.idea</code> to your <code>.gitignore</code>:</p>
+
+              <span class="code-label">.gitignore (add this line)</span>
+              <pre><code class="language-markup">.idea</code></pre>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                You have a standard Android project that shows "Hello World!" on an emulator.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 2: Base Android app
+         ============================================================ -->
+    <section id="step2" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 2 · Branch: master</div>
+          <h2 class="section-title">Add Hotwire Native Dependencies</h2>
+          <p class="section-sub">Commit: <code>Base Android app</code></p>
+        </div>
+        <div class="details-list">
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">2</span>
+                <span class="module-title">Convert to a Hotwire Native app</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Now we turn this into a Hotwire Native app. We need to:</p>
+              <ol>
+                <li>Add the Hotwire Native dependencies to <code>build.gradle.kts</code></li>
+                <li>Add the INTERNET permission to <code>AndroidManifest.xml</code></li>
+                <li>Convert <code>MainActivity</code> to extend <code>HotwireActivity</code></li>
+                <li>Replace the layout with a <code>NavigatorHost</code> fragment</li>
+              </ol>
+
+              <span class="code-label">app/build.gradle.kts — add Hotwire dependencies</span>
+              <pre><code class="language-kotlin">dependencies {
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
+    implementation("dev.hotwire:core:1.2.6")
+    implementation("dev.hotwire:navigation-fragments:1.2.6")
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+}</code></pre>
+
+              <span class="code-label">app/src/main/AndroidManifest.xml — add INTERNET permission</span>
+              <pre><code class="language-markup">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"&gt;
+    &lt;uses-permission android:name="android.permission.INTERNET"/&gt;
+    &lt;application
+        ...&gt;
+        ...
+    &lt;/application&gt;
+&lt;/manifest&gt;</code></pre>
+
+              <span class="code-label">app/src/main/java/.../MainActivity.kt — extend HotwireActivity</span>
+              <pre><code class="language-kotlin">package com.example.hotwirenativeworkshop
+
+import android.os.Bundle
+import android.view.View
+import androidx.activity.enableEdgeToEdge
+import dev.hotwire.navigation.activities.HotwireActivity
+import dev.hotwire.navigation.navigator.NavigatorConfiguration
+import dev.hotwire.navigation.util.applyDefaultImeWindowInsets
+
+class MainActivity : HotwireActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        findViewById&lt;View&gt;(R.id.main_nav_host).applyDefaultImeWindowInsets()
+    }
+
+    override fun navigatorConfigurations() = listOf(
+        NavigatorConfiguration(
+            name = "main",
+            startLocation = "https://hotwire-native-demo.dev",
+            navigatorHostId = R.id.main_nav_host
+        )
+    )
+}</code></pre>
+
+              <span class="code-label">app/src/main/res/layout/activity_main.xml — NavigatorHost</span>
+              <pre><code class="language-markup">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;androidx.fragment.app.FragmentContainerView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_nav_host"
+    android:name="dev.hotwire.navigation.navigator.NavigatorHost"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:defaultNavHost="false" /&gt;</code></pre>
+
+              <div class="callout">
+                <h4>Key changes</h4>
+                <ul>
+                  <li><code>MainActivity</code> now extends <code>HotwireActivity</code> instead of <code>AppCompatActivity</code></li>
+                  <li><code>navigatorConfigurations()</code> defines the start URL and navigator host</li>
+                  <li>The layout uses <code>NavigatorHost</code> — a fragment container that manages the navigation stack</li>
+                  <li>The start URL points to the demo server (<code>https://hotwire-native-demo.dev</code>)</li>
+                </ul>
+              </div>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                Your app now loads the Hotwire Native demo site in a native shell with native navigation transitions.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 3: Add path-configuration.json
+         ============================================================ -->
+    <section id="step3" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 3 · Branch: master</div>
+          <h2 class="section-title">Add Path Configuration</h2>
+          <p class="section-sub">Commit: <code>Add path-configuration.json</code></p>
+        </div>
+        <div class="details-list">
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">3</span>
+                <span class="module-title">Path configuration + Application class</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Path configuration is a JSON file that controls how URLs are handled — which screens push, which present as modals, and more. We also create a custom <code>Application</code> class to load it.</p>
+
+              <span class="code-label">app/src/main/assets/json/path-configuration.json — create this file</span>
+              <pre><code class="language-json">{
+  "settings": {},
+  "rules": [
+    {
+      "patterns": [
+        ".*"
+      ],
+      "properties": {
+        "context": "default",
+        "uri": "hotwire://fragment/web",
+        "pull_to_refresh_enabled": true
+      }
+    },
+    {
+      "patterns": [
+        "/new$"
+      ],
+      "properties": {
+        "context": "modal",
+        "uri": "hotwire://fragment/web/modal/sheet",
+        "pull_to_refresh_enabled": false
+      }
+    }
+  ]
+}</code></pre>
+
+              <span class="code-label">app/src/main/java/.../KanbanBoardApplication.kt — create this file</span>
+              <pre><code class="language-kotlin">package com.example.hotwirenativeworkshop
+
+import android.app.Application
+import dev.hotwire.core.config.Hotwire
+import dev.hotwire.core.turbo.config.PathConfiguration
+
+class KanbanBoardApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+
+        Hotwire.loadPathConfiguration(
+            context = this,
+            location = PathConfiguration.Location(
+                assetFilePath = "json/path-configuration.json"
+            )
+        )
+    }
+}</code></pre>
+
+              <span class="code-label">app/src/main/AndroidManifest.xml — register the Application class</span>
+              <pre><code class="language-markup">&lt;application
+    android:name=".KanbanBoardApplication"
+    android:allowBackup="true"
+    ...&gt;</code></pre>
+
+              <div class="callout">
+                <h4>How path configuration works</h4>
+                <ul>
+                  <li>The first rule (<code>.*</code>) is the default — all URLs open as regular web fragments with pull-to-refresh</li>
+                  <li>The second rule (<code>/new$</code>) — URLs ending in "/new" open as a bottom sheet modal</li>
+                  <li>Rules are matched top-to-bottom; later rules override earlier ones for the same URL</li>
+                </ul>
+              </div>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                URLs ending in "/new" now open as native bottom sheet modals. All other URLs use the default web fragment.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 4: App configuration
+         ============================================================ -->
+    <section id="step4" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 4 · Branch: master</div>
+          <h2 class="section-title">Configure Hotwire Settings</h2>
+          <p class="section-sub">Commit: <code>App configuration</code></p>
+        </div>
+        <div class="details-list">
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">4</span>
+                <span class="module-title">Debug logging, WebView debugging, JSON converter, User-Agent</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Add Hotwire configuration options: debug logging, WebView debugging, JSON converter, and a custom User-Agent prefix so the Rails app can identify native requests.</p>
+
+              <span class="code-label">KanbanBoardApplication.kt — update with configuration</span>
+              <pre><code class="language-kotlin">package com.example.hotwirenativeworkshop
+
+import android.app.Application
+import dev.hotwire.core.BuildConfig
+import dev.hotwire.core.bridge.KotlinXJsonConverter
+import dev.hotwire.core.config.Hotwire
+import dev.hotwire.core.turbo.config.PathConfiguration
+
+class KanbanBoardApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        configureApp()
+    }
+
+    private fun configureApp() {
+        Hotwire.loadPathConfiguration(
+            context = this,
+            location = PathConfiguration.Location(
+                assetFilePath = "json/path-configuration.json"
+            )
+        )
+
+        // Set configuration options
+        Hotwire.config.debugLoggingEnabled = BuildConfig.DEBUG
+        Hotwire.config.webViewDebuggingEnabled = BuildConfig.DEBUG
+        Hotwire.config.jsonConverter = KotlinXJsonConverter()
+        Hotwire.config.applicationUserAgentPrefix = "Kanban Boards;"
+    }
+}</code></pre>
+
+              <div class="callout">
+                <h4>What each setting does</h4>
+                <ul>
+                  <li><code>debugLoggingEnabled</code> — shows Hotwire lifecycle events in Logcat (debug builds only)</li>
+                  <li><code>webViewDebuggingEnabled</code> — allows Chrome DevTools to inspect the WebView</li>
+                  <li><code>jsonConverter</code> — uses <code>kotlinx.serialization</code> for parsing bridge messages</li>
+                  <li><code>applicationUserAgentPrefix</code> — the Rails app can use <code>turbo_native_app?</code> to detect this</li>
+                </ul>
+              </div>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                Your app now has debug logging, WebView inspection support, and the Rails app can detect it as a native app via User-Agent.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 5: HotwireWebFragment added
+         ============================================================ -->
+    <section id="step5" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 5 · Branch: master</div>
+          <h2 class="section-title">Add Web Fragments</h2>
+          <p class="section-sub">Commit: <code>HotwireWebFragment added</code></p>
+        </div>
+        <div class="details-list">
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">5</span>
+                <span class="module-title">WebFragment + WebBottomSheetFragment + register destinations</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Create two fragment classes that map to the <code>uri</code> values in your path configuration. Then register them as fragment destinations.</p>
+
+              <span class="code-label">app/src/main/java/.../features/web/WebFragment.kt — create this file</span>
+              <pre><code class="language-kotlin">package com.example.hotwirenativeworkshop.features.web
+
+import dev.hotwire.navigation.destinations.HotwireDestinationDeepLink
+import dev.hotwire.navigation.fragments.HotwireWebFragment
+
+@HotwireDestinationDeepLink(uri = "hotwire://fragment/web")
+class WebFragment : HotwireWebFragment()</code></pre>
+
+              <span class="code-label">app/src/main/java/.../features/web/WebBottomSheetFragment.kt — create this file</span>
+              <pre><code class="language-kotlin">package com.example.hotwirenativeworkshop.features.web
+
+import dev.hotwire.navigation.destinations.HotwireDestinationDeepLink
+import dev.hotwire.navigation.fragments.HotwireWebBottomSheetFragment
+
+@HotwireDestinationDeepLink(uri = "hotwire://fragment/web/modal/sheet")
+class WebBottomSheetFragment : HotwireWebBottomSheetFragment()</code></pre>
+
+              <span class="code-label">KanbanBoardApplication.kt — register fragment destinations</span>
+              <pre><code class="language-kotlin">package com.example.hotwirenativeworkshop
+
+import android.app.Application
+import com.example.hotwirenativeworkshop.features.web.WebBottomSheetFragment
+import com.example.hotwirenativeworkshop.features.web.WebFragment
+import dev.hotwire.core.BuildConfig
+import dev.hotwire.core.bridge.KotlinXJsonConverter
+import dev.hotwire.core.config.Hotwire
+import dev.hotwire.core.turbo.config.PathConfiguration
+import dev.hotwire.navigation.config.defaultFragmentDestination
+import dev.hotwire.navigation.config.registerFragmentDestinations
+
+
+class KanbanBoardApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        configureApp()
+    }
+
+    private fun configureApp() {
+        Hotwire.loadPathConfiguration(
+            context = this,
+            location = PathConfiguration.Location(
+                assetFilePath = "json/path-configuration.json"
+            )
+        )
+
+        // Set the default fragment destination
+        Hotwire.defaultFragmentDestination = WebFragment::class
+
+        // Register fragment destinations
+        Hotwire.registerFragmentDestinations(
+            WebFragment::class,
+            WebBottomSheetFragment::class
+        )
+
+        // Set configuration options
+        Hotwire.config.debugLoggingEnabled = BuildConfig.DEBUG
+        Hotwire.config.webViewDebuggingEnabled = BuildConfig.DEBUG
+        Hotwire.config.jsonConverter = KotlinXJsonConverter()
+        Hotwire.config.applicationUserAgentPrefix = "Kanban Boards;"
+    }
+}</code></pre>
+
+              <div class="callout">
+                <h4>How fragments map to path configuration</h4>
+                <ul>
+                  <li><code>@HotwireDestinationDeepLink(uri = "hotwire://fragment/web")</code> — matches the <code>"uri"</code> in the default rule</li>
+                  <li><code>@HotwireDestinationDeepLink(uri = "hotwire://fragment/web/modal/sheet")</code> — matches the modal rule</li>
+                  <li><code>defaultFragmentDestination</code> — the fallback fragment used when no URI matches</li>
+                </ul>
+              </div>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                Your app now properly routes URLs to fragments — default pages use <code>WebFragment</code>, and "/new" URLs open as bottom sheet modals using <code>WebBottomSheetFragment</code>.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 6: MainActivity moved
+         ============================================================ -->
+    <section id="step6" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 6 · Branch: master</div>
+          <h2 class="section-title">Organize — Move MainActivity</h2>
+          <p class="section-sub">Commit: <code>MainActivity moved</code></p>
+        </div>
+        <div class="details-list">
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">6</span>
+                <span class="module-title">Move MainActivity to main/ package</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>For better code organization, move <code>MainActivity</code> into a <code>main</code> subpackage.</p>
+
+              <span class="code-label">app/src/main/java/.../main/MainActivity.kt — move and update package</span>
+              <pre><code class="language-kotlin">package com.example.hotwirenativeworkshop.main
+
+import android.os.Bundle
+import android.view.View
+import androidx.activity.enableEdgeToEdge
+import com.example.hotwirenativeworkshop.R
+import dev.hotwire.navigation.activities.HotwireActivity
+import dev.hotwire.navigation.navigator.NavigatorConfiguration
+import dev.hotwire.navigation.util.applyDefaultImeWindowInsets
+
+class MainActivity : HotwireActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        findViewById&lt;View&gt;(R.id.main_nav_host).applyDefaultImeWindowInsets()
+    }
+
+    override fun navigatorConfigurations() = listOf(
+        NavigatorConfiguration(
+            name = "main",
+            startLocation = "https://hotwire-native-demo.dev",
+            navigatorHostId = R.id.main_nav_host
+        )
+    )
+}</code></pre>
+
+              <span class="code-label">AndroidManifest.xml — update activity reference</span>
+              <pre><code class="language-markup">&lt;activity
+    android:name=".main.MainActivity"
+    android:exported="true"&gt;
+    &lt;intent-filter&gt;
+        &lt;action android:name="android.intent.action.MAIN" /&gt;
+        &lt;category android:name="android.intent.category.LAUNCHER" /&gt;
+    &lt;/intent-filter&gt;
+&lt;/activity&gt;</code></pre>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                Project is now better organized: <code>main/</code> for the Activity, <code>features/web/</code> for fragments.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 7: Remote and Local url support
+         ============================================================ -->
+    <section id="step7" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 7 · Branch: master</div>
+          <h2 class="section-title">Add Environment Switcher</h2>
+          <p class="section-sub">Commit: <code>introduce Remote and Local url support</code></p>
+        </div>
+        <div class="details-list">
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">7</span>
+                <span class="module-title">KanbanBoard object with Remote/Local environments</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Create a simple environment switcher so you can toggle between the remote demo server and your local Rails app.</p>
+
+              <span class="code-label">app/src/main/java/.../KanbanBoard.kt — create this file</span>
+              <pre><code class="language-kotlin">package com.example.hotwirenativeworkshop
+
+object KanbanBoard {
+    // Update this to choose which demo is run
+    val current: Environment = Environment.Remote
+
+    enum class Environment(val url: String) {
+        Remote("https://hotwire-native-demo.dev"),
+        Local("http://10.0.2.2:3000")
+    }
+}</code></pre>
+
+              <div class="callout">
+                <h4>Why 10.0.2.2?</h4>
+                <p>The Android emulator uses <code>10.0.2.2</code> to access the host machine's <code>localhost</code>. This is different from iOS Simulator which uses <code>localhost</code> directly.</p>
+              </div>
+
+              <span class="code-label">MainActivity.kt — use the environment switcher</span>
+              <pre><code class="language-kotlin">override fun navigatorConfigurations() = listOf(
+    NavigatorConfiguration(
+        name = "main",
+        startLocation = KanbanBoard.current.url,
+        navigatorHostId = R.id.main_nav_host
+    )
+)</code></pre>
+
+              <span class="code-label">KanbanBoardApplication.kt — add remote path configuration URL</span>
+              <pre><code class="language-kotlin">Hotwire.loadPathConfiguration(
+    context = this,
+    location = PathConfiguration.Location(
+        assetFilePath = "json/path-configuration.json",
+        remoteFileUrl = "${KanbanBoard.current.url}/configurations/android_v1.json"
+    )
+)</code></pre>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                You can switch between remote and local servers by changing one line in <code>KanbanBoard.kt</code>. The path configuration can also be loaded remotely from the Rails app.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 8: Allow http access on localhost
+         ============================================================ -->
+    <section id="step8" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 8 · Branch: master</div>
+          <h2 class="section-title">Allow HTTP Access on Localhost</h2>
+          <p class="section-sub">Commit: <code>Allow http access on localhost</code></p>
+        </div>
+        <div class="details-list">
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">8</span>
+                <span class="module-title">Network security config for cleartext HTTP</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Android blocks cleartext HTTP traffic by default. We need to allow it for local development.</p>
+
+              <span class="code-label">app/src/main/res/xml/network_security_config.xml — create this file</span>
+              <pre><code class="language-markup">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;network-security-config&gt;
+    &lt;domain-config cleartextTrafficPermitted="true"&gt;
+        &lt;domain includeSubdomains="false"&gt;10.0.2.2&lt;/domain&gt;
+        &lt;domain includeSubdomains="false"&gt;localhost&lt;/domain&gt;
+    &lt;/domain-config&gt;
+&lt;/network-security-config&gt;</code></pre>
+
+              <span class="code-label">AndroidManifest.xml — reference the network security config</span>
+              <pre><code class="language-markup">&lt;application
+    android:name=".KanbanBoardApplication"
+    android:allowBackup="true"
+    android:dataExtractionRules="@xml/data_extraction_rules"
+    android:fullBackupContent="@xml/backup_rules"
+    android:icon="@mipmap/ic_launcher"
+    android:label="@string/app_name"
+    android:roundIcon="@mipmap/ic_launcher_round"
+    android:supportsRtl="true"
+    android:theme="@style/Theme.HotwireNativeWorkshop"
+    android:networkSecurityConfig="@xml/network_security_config"&gt;</code></pre>
+
+              <div class="callout">
+                <h4>Security note</h4>
+                <p>This only allows cleartext HTTP to <code>10.0.2.2</code> and <code>localhost</code>. All other domains still require HTTPS. This is safe for development only.</p>
+              </div>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                Your app can now connect to the local Rails server running at <code>http://10.0.2.2:3000</code> on the emulator.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 9: kotlinx.serialization added
+         ============================================================ -->
+    <section id="step9" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 9 · Branch: master</div>
+          <h2 class="section-title">Add kotlinx.serialization</h2>
+          <p class="section-sub">Commit: <code>kotlinx.serialization added</code></p>
+        </div>
+        <div class="details-list">
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">9</span>
+                <span class="module-title">Serialization plugin for bridge component messages</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Bridge components use JSON messages. We need <code>kotlinx.serialization</code> to parse them. This step updates three files.</p>
+
+              <span class="code-label">gradle/libs.versions.toml — add Kotlin version and plugins</span>
+              <pre><code class="language-toml">[versions]
+agp = "9.0.1"
+kotlin = "2.1.0"
+coreKtx = "1.17.0"
+junit = "4.13.2"
+junitVersion = "1.3.0"
+espressoCore = "3.7.0"
+appcompat = "1.7.1"
+material = "1.13.0"
+activity = "1.12.4"
+constraintlayout = "2.2.1"
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }</code></pre>
+
+              <span class="code-label">build.gradle.kts (project-level) — add serialization plugin</span>
+              <pre><code class="language-kotlin">// Top-level build file where you can add configuration options common to all sub-projects/modules.
+plugins {
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
+}</code></pre>
+
+              <span class="code-label">app/build.gradle.kts — apply plugin, update Java version, add dependency</span>
+              <pre><code class="language-kotlin">plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.serialization)
+}
+
+android {
+    // ... existing config ...
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
+    implementation("dev.hotwire:core:1.2.6")
+    implementation("dev.hotwire:navigation-fragments:1.2.6")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+}</code></pre>
+
+              <div class="callout">
+                <h4>Why kotlinx.serialization?</h4>
+                <p>Hotwire Native's bridge components send JSON messages between web and native. <code>kotlinx.serialization</code> lets you define <code>@Serializable</code> data classes to parse these messages type-safely. Also note the Java version bump to 17, required by the serialization plugin.</p>
+              </div>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                The project is ready for bridge components — you can now define <code>@Serializable</code> data classes to parse bridge messages.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 10: Switch Environment from Remote to Local
+         ============================================================ -->
+    <section id="step10" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 10 · Branch: button-component</div>
+          <h2 class="section-title">Switch to Local Environment</h2>
+          <p class="section-sub">Commit: <code>Switch Environment from Remote to Local</code></p>
+        </div>
+        <div class="details-list">
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">10</span>
+                <span class="module-title">Point the app to your local Rails server</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Before building bridge components, switch to the local Rails app so changes are immediately visible.</p>
+
+              <span class="code-label">KanbanBoard.kt — change Remote to Local</span>
+              <pre><code class="language-kotlin">object KanbanBoard {
+    // Update this to choose which demo is run
+    val current: Environment = Environment.Local
+
+    enum class Environment(val url: String) {
+        Remote("https://hotwire-native-demo.dev"),
+        Local("http://10.0.2.2:3000")
+    }
+}</code></pre>
+
+              <div class="callout">
+                <h4>Make sure your Rails app is running!</h4>
+                <p>Run <code>bin/dev</code> in the <code>hotwire-native-workshop-rails</code> directory. The app should be available at <code>http://localhost:3000</code>.</p>
+              </div>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                Your Android app now connects to the local Rails Kanban Board app. You can see your local changes in real-time.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 11: ButtonComponent Kotlin component added
+         ============================================================ -->
+    <section id="step11" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 11 · Branch: button-component</div>
+          <h2 class="section-title">Bridge Component — ButtonComponent Scaffold</h2>
+          <p class="section-sub">Commit: <code>ButtonComponent Kotlin component added</code></p>
+        </div>
+        <div class="details-list">
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">11</span>
+                <span class="module-title">Create the ButtonComponent bridge scaffold</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>A Bridge Component is a Kotlin class that receives messages from a Stimulus controller on the web side and can render native UI. Let's start with the scaffold.</p>
+
+              <span class="code-label">app/src/main/java/.../bridge/ButtonComponent.kt — create this file</span>
+              <pre><code class="language-kotlin">package com.example.hotwirenativeworkshop.bridge
+
+import android.util.Log
+import dev.hotwire.core.bridge.BridgeComponent
+import dev.hotwire.core.bridge.BridgeDelegate
+import dev.hotwire.core.bridge.Message
+import dev.hotwire.navigation.destinations.HotwireDestination
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+class ButtonComponent(
+    name: String,
+    private val delegate: BridgeDelegate&lt;HotwireDestination&gt;
+) : BridgeComponent&lt;HotwireDestination&gt;(name, delegate) {
+
+    override fun onReceive(message: Message) {
+        // Handle incoming messages based on the message `event`.
+        when (message.event) {
+            "connect" -&gt; handleConnectEvent(message)
+            else -&gt; Log.w("ButtonComponent", "Unknown event for message: $message")
+        }
+    }
+
+    private fun handleConnectEvent(message: Message) {
+        val data = message.data&lt;MessageData&gt;() ?: return
+
+        // Write native code to display a native submit button in the
+        // toolbar displayed in the delegate.destination. Use the
+        // incoming data.title to set the button title.
+    }
+
+    private fun performButtonClick(): Boolean {
+        return replyTo("connect")
+    }
+
+    // Use kotlinx.serialization annotations to define a serializable
+    // data class that represents the incoming message.data json.
+    @Serializable
+    data class MessageData(
+        @SerialName("title") val title: String
+    )
+}</code></pre>
+
+              <span class="code-label">KanbanBoardApplication.kt — register the bridge component</span>
+              <pre><code class="language-kotlin">import com.example.hotwirenativeworkshop.bridge.ButtonComponent
+import dev.hotwire.core.bridge.BridgeComponentFactory
+import dev.hotwire.navigation.config.registerBridgeComponents
+
+// Inside configureApp(), after registerFragmentDestinations:
+
+// Register bridge components
+Hotwire.registerBridgeComponents(
+    BridgeComponentFactory("button", ::ButtonComponent)
+)</code></pre>
+
+              <div class="callout">
+                <h4>How it works</h4>
+                <ul>
+                  <li><code>BridgeComponentFactory("button", ::ButtonComponent)</code> — the name <code>"button"</code> must match the Stimulus controller's <code>static component = "button"</code> on the web side</li>
+                  <li><code>onReceive(message)</code> — called when the web sends a message via <code>this.send("connect", data, callback)</code></li>
+                  <li><code>message.data&lt;MessageData&gt;()</code> — deserializes the JSON payload using kotlinx.serialization</li>
+                  <li><code>replyTo("connect")</code> — fires the callback on the web side (e.g., triggers a click)</li>
+                </ul>
+              </div>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                The ButtonComponent is registered and receives messages, but doesn't render anything yet — that comes in the next step.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 12: ButtonComponent : handleConnectEvent implemented
+         ============================================================ -->
+    <section id="step12" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 12 · Branch: button-component</div>
+          <h2 class="section-title">Bridge Component — ButtonComponent Implementation</h2>
+          <p class="section-sub">Commit: <code>ButtonComponent : handleConnectEvent implemented</code></p>
+        </div>
+        <div class="details-list">
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">12</span>
+                <span class="module-title">Render a native toolbar button from the bridge</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Now implement the toolbar button rendering. When the web sends a "connect" event with a title, we create a native toolbar menu item.</p>
+
+              <span class="code-label">bridge/ButtonComponent.kt — full implementation</span>
+              <pre><code class="language-kotlin">package com.example.hotwirenativeworkshop.bridge
+
+import android.graphics.Color
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
+import dev.hotwire.navigation.R
+import dev.hotwire.core.bridge.BridgeComponent
+import dev.hotwire.core.bridge.BridgeDelegate
+import dev.hotwire.core.bridge.Message
+import dev.hotwire.navigation.destinations.HotwireDestination
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import androidx.core.graphics.toColorInt
+
+class ButtonComponent(
+    name: String,
+    private val delegate: BridgeDelegate&lt;HotwireDestination&gt;
+) : BridgeComponent&lt;HotwireDestination&gt;(name, delegate) {
+
+    // A unique integer ID for your menu item (any number, just needs to be unique)
+    private val buttonItemId = 37
+
+    // Keep a reference to the menu item so you can manipulate it later
+    private var buttonMenuItem: MenuItem? = null
+
+    // Get the Fragment that hosts this screen
+    private val fragment: Fragment
+        get() = delegate.destination.fragment
+
+    // Find the Toolbar view inside that Fragment
+    private val toolbar: Toolbar?
+        get() = fragment.view?.findViewById(R.id.toolbar)
+
+    override fun onReceive(message: Message) {
+        // Handle incoming messages based on the message `event`.
+        when (message.event) {
+            "connect" -&gt; handleConnectEvent(message)
+            else -&gt; Log.w("ButtonComponent", "Unknown event for message: $message")
+        }
+    }
+
+    private fun handleConnectEvent(message: Message) {
+        val data = message.data&lt;MessageData&gt;() ?: return
+        showToolbarButton(data)
+    }
+
+    private fun showToolbarButton(data: MessageData) {
+        val menu = toolbar?.menu ?: return
+        val order = 999 // Show as the right-most button
+
+        val title = SpannableString(data.title).apply {
+            setSpan(ForegroundColorSpan("#FF6600".toColorInt()), 0, length, 0)
+        }
+
+        menu.removeItem(buttonItemId)  // Remove any existing button first (prevents duplicates)
+        buttonMenuItem = menu.add(Menu.NONE, buttonItemId, order, title).apply {
+            setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)  // Always show in toolbar, not overflow
+            setOnMenuItemClickListener {
+                performButtonClick()  // Wire the tap to reply back to JS
+                true
+            }
+        }
+    }
+
+    private fun performButtonClick(): Boolean {
+        return replyTo("connect")
+    }
+
+    // Use kotlinx.serialization annotations to define a serializable
+    // data class that represents the incoming message.data json.
+    @Serializable
+    data class MessageData(
+        @SerialName("title") val title: String
+    )
+}</code></pre>
+
+              <div class="callout">
+                <h4>Key implementation details</h4>
+                <ul>
+                  <li><code>delegate.destination.fragment</code> — access the hosting Fragment to find the Toolbar</li>
+                  <li><code>R.id.toolbar</code> — Hotwire's built-in toolbar ID in each web fragment</li>
+                  <li><code>SpannableString</code> with <code>ForegroundColorSpan</code> — colors the button text orange (#FF6600)</li>
+                  <li><code>menu.removeItem(buttonItemId)</code> — prevents duplicate buttons on re-render</li>
+                  <li><code>setShowAsAction(SHOW_AS_ACTION_ALWAYS)</code> — shows directly in the toolbar, not in the overflow menu</li>
+                  <li><code>replyTo("connect")</code> — triggers the callback on the web side (which clicks the original web button)</li>
+                </ul>
+              </div>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                Web buttons annotated with the "button" bridge component now appear as native toolbar buttons. Tapping them triggers the original web action.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 13: /boards/new in Sheet Modal + replace /boards
+         ============================================================ -->
+    <section id="step13" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 13 · Branch: new-board-modal</div>
+          <h2 class="section-title">Path Configuration — Modals &amp; Replace</h2>
+          <p class="section-sub">Commits: <code>/boards/new in Sheet Modal</code> + <code>replace /boards</code></p>
+        </div>
+        <div class="details-list">
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">13</span>
+                <span class="module-title">Fine-tune path configuration for the Kanban Board</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Two changes to the path configuration to improve navigation:</p>
+              <ol>
+                <li>Change the modal pattern from generic <code>/new$</code> to specific <code>/boards/new$</code> — only the "New Board" form opens as a sheet modal</li>
+                <li>Add a <code>"presentation": "replace"</code> rule for <code>/boards$</code> — after creating a new board, the boards list replaces the current screen instead of pushing on top</li>
+              </ol>
+
+              <span class="code-label">app/src/main/assets/json/path-configuration.json — updated</span>
+              <pre><code class="language-json">{
+  "settings": {},
+  "rules": [
+    {
+      "patterns": [
+        ".*"
+      ],
+      "properties": {
+        "context": "default",
+        "uri": "hotwire://fragment/web",
+        "pull_to_refresh_enabled": true
+      }
+    },
+    {
+      "patterns": [
+        "/boards$"
+      ],
+      "properties": {
+        "context": "default",
+        "uri": "hotwire://fragment/web",
+        "presentation": "replace",
+        "pull_to_refresh_enabled": true
+      }
+    },
+    {
+      "patterns": [
+        "/boards/new$"
+      ],
+      "properties": {
+        "context": "modal",
+        "uri": "hotwire://fragment/web/modal/sheet",
+        "pull_to_refresh_enabled": false
+      }
+    }
+  ]
+}</code></pre>
+
+              <div class="callout">
+                <h4>What changed</h4>
+                <ul>
+                  <li><code>/new$</code> changed to <code>/boards/new$</code> — more specific pattern so only board creation opens as a modal</li>
+                  <li>New rule for <code>/boards$</code> with <code>"presentation": "replace"</code> — when navigating to the boards list, it replaces the current screen in the navigation stack instead of pushing a new one. This gives a cleaner "back" behavior after creating a board.</li>
+                </ul>
+              </div>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                Creating a new board opens as a sheet modal. After saving, the boards list replaces the modal cleanly. Navigation feels polished and native.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 14: FormComponent Kotlin component scaffold added
+         ============================================================ -->
+    <section id="step14" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 14 · Branch: form-component</div>
+          <h2 class="section-title">Bridge Component — FormComponent Scaffold</h2>
+          <p class="section-sub">Commit: <code>FormComponent Kotlin component scaffold added</code></p>
+        </div>
+        <div class="details-list">
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">14</span>
+                <span class="module-title">FormComponent with submit enable/disable events</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>The FormComponent is similar to ButtonComponent but adds submit enable/disable support — the native button grays out when the form is invalid.</p>
+
+              <span class="code-label">app/src/main/java/.../bridge/FormComponent.kt — create this file</span>
+              <pre><code class="language-kotlin">package com.example.hotwirenativeworkshop.bridge
+
+import android.util.Log
+import dev.hotwire.core.bridge.BridgeComponent
+import dev.hotwire.core.bridge.BridgeDelegate
+import dev.hotwire.core.bridge.Message
+import dev.hotwire.navigation.destinations.HotwireDestination
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+class FormComponent(
+    name: String,
+    private val delegate: BridgeDelegate&lt;HotwireDestination&gt;
+) : BridgeComponent&lt;HotwireDestination&gt;(name, delegate) {
+
+    override fun onReceive(message: Message) {
+        // Handle incoming messages based on the message `event`.
+        when (message.event) {
+            "connect" -&gt; handleConnectEvent(message)
+            "submitEnabled" -&gt; handleSubmitEnabled()
+            "submitDisabled" -&gt; handleSubmitDisabled()
+            else -&gt; Log.w("ButtonComponent", "Unknown event for message: $message")
+        }
+    }
+
+    private fun handleConnectEvent(message: Message) {
+        val data = message.data&lt;MessageData&gt;() ?: return
+        showToolbarButton(data)
+    }
+
+    private fun showToolbarButton(data: MessageData) {
+        // Write native code to display a native submit button in the
+        // toolbar displayed in the delegate.destination. Use the
+        // incoming data.title to set the button title.
+    }
+
+    private fun handleSubmitEnabled() {
+        toggleSubmitButton(true)
+    }
+
+    private fun handleSubmitDisabled() {
+        toggleSubmitButton(false)
+    }
+
+    private fun toggleSubmitButton(enable: Boolean) {
+        // TODO
+    }
+
+    private fun performSubmit(): Boolean {
+        return replyTo("connect")
+    }
+
+    // Use kotlinx.serialization annotations to define a serializable
+    // data class that represents the incoming message.data json.
+    @Serializable
+    data class MessageData(
+        @SerialName("submitTitle") val title: String
+    )
+}</code></pre>
+
+              <span class="code-label">KanbanBoardApplication.kt — register FormComponent</span>
+              <pre><code class="language-kotlin">import com.example.hotwirenativeworkshop.bridge.FormComponent
+
+// Register bridge components
+Hotwire.registerBridgeComponents(
+    BridgeComponentFactory("button", ::ButtonComponent),
+    BridgeComponentFactory("form", ::FormComponent)
+)</code></pre>
+
+              <div class="callout">
+                <h4>FormComponent vs ButtonComponent</h4>
+                <ul>
+                  <li>FormComponent handles three events: <code>connect</code>, <code>submitEnabled</code>, <code>submitDisabled</code></li>
+                  <li>The <code>submitEnabled</code>/<code>submitDisabled</code> events let the web side control whether the native button is active</li>
+                  <li>Note: <code>MessageData.title</code> maps to <code>"submitTitle"</code> (not <code>"title"</code> like in ButtonComponent)</li>
+                </ul>
+              </div>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                The FormComponent scaffold is registered and receives messages, but the toolbar button rendering is not yet implemented.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 15: FormComponent implemented
+         ============================================================ -->
+    <section id="step15" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 15 · Branch: form-component</div>
+          <h2 class="section-title">Bridge Component — FormComponent Complete</h2>
+          <p class="section-sub">Commit: <code>FormComponent implemented</code></p>
+        </div>
+        <div class="details-list">
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">15</span>
+                <span class="module-title">Full FormComponent with toolbar button and enable/disable</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Complete the FormComponent with toolbar button rendering and enable/disable support.</p>
+
+              <span class="code-label">bridge/FormComponent.kt — full implementation</span>
+              <pre><code class="language-kotlin">package com.example.hotwirenativeworkshop.bridge
+
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.widget.Toolbar
+import androidx.core.graphics.toColorInt
+import androidx.fragment.app.Fragment
+import dev.hotwire.core.bridge.BridgeComponent
+import dev.hotwire.core.bridge.BridgeDelegate
+import dev.hotwire.core.bridge.Message
+import dev.hotwire.navigation.R
+import dev.hotwire.navigation.destinations.HotwireDestination
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+class FormComponent(
+    name: String,
+    private val delegate: BridgeDelegate&lt;HotwireDestination&gt;
+) : BridgeComponent&lt;HotwireDestination&gt;(name, delegate) {
+
+    private val submitButtonItemId = 38
+    private var submitMenuItem: MenuItem? = null
+
+    private val fragment: Fragment
+        get() = delegate.destination.fragment
+
+    private val toolbar: Toolbar?
+        get() = fragment.view?.findViewById(R.id.toolbar)
+
+    override fun onReceive(message: Message) {
+        // Handle incoming messages based on the message `event`.
+        when (message.event) {
+            "connect" -&gt; handleConnectEvent(message)
+            "submitEnabled" -&gt; handleSubmitEnabled()
+            "submitDisabled" -&gt; handleSubmitDisabled()
+            else -&gt; Log.w("FormComponent", "Unknown event for message: $message")
+        }
+    }
+
+    private fun handleConnectEvent(message: Message) {
+        val data = message.data&lt;MessageData&gt;() ?: return
+        showToolbarButton(data)
+    }
+
+    private fun showToolbarButton(data: MessageData) {
+        val menu = toolbar?.menu ?: return
+        val order = 999 // Show as the right-most button
+
+        val title = SpannableString(data.title).apply {
+            setSpan(ForegroundColorSpan("#FF6600".toColorInt()), 0, length, 0)
+        }
+
+        menu.removeItem(submitButtonItemId)  // Remove any existing button first (prevents duplicates)
+        submitMenuItem = menu.add(Menu.NONE, submitButtonItemId, order, title).apply {
+            setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)  // Always show in toolbar, not overflow
+            setOnMenuItemClickListener {
+                performSubmit()
+                true
+            }
+        }
+    }
+
+    private fun handleSubmitEnabled() {
+        toggleSubmitButton(true)
+    }
+
+    private fun handleSubmitDisabled() {
+        toggleSubmitButton(false)
+    }
+
+    private fun toggleSubmitButton(enable: Boolean) {
+        submitMenuItem?.isEnabled = enable
+    }
+
+    private fun performSubmit(): Boolean {
+        return replyTo("connect")
+    }
+
+    // Use kotlinx.serialization annotations to define a serializable
+    // data class that represents the incoming message.data json.
+    @Serializable
+    data class MessageData(
+        @SerialName("submitTitle") val title: String
+    )
+}</code></pre>
+
+              <div class="callout">
+                <h4>What's different from ButtonComponent</h4>
+                <ul>
+                  <li><code>submitButtonItemId = 38</code> — different ID to avoid conflicts with ButtonComponent (37)</li>
+                  <li><code>toggleSubmitButton(enable)</code> — uses <code>submitMenuItem?.isEnabled = enable</code> to gray out the button</li>
+                  <li>The web side sends <code>submitEnabled</code>/<code>submitDisabled</code> events as the form validation state changes</li>
+                  <li>The log tag is fixed to <code>"FormComponent"</code> (was incorrectly <code>"ButtonComponent"</code> in the scaffold)</li>
+                </ul>
+              </div>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                Form submit buttons now appear as native toolbar buttons. They disable when the form is invalid and re-enable when valid. Tapping submits the web form. The full bridge component architecture is in place!
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FINAL PROJECT STRUCTURE
+         ============================================================ -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Reference</div>
+          <h2 class="section-title">Final Project Structure</h2>
+        </div>
+        <div class="about-prose">
+          <pre><code class="language-markup">app/src/main/
+├── AndroidManifest.xml
+├── assets/json/
+│   └── path-configuration.json
+├── java/com/example/hotwirenativeworkshop/
+│   ├── KanbanBoard.kt
+│   ├── KanbanBoardApplication.kt
+│   ├── bridge/
+│   │   ├── ButtonComponent.kt
+│   │   └── FormComponent.kt
+│   ├── features/web/
+│   │   ├── WebBottomSheetFragment.kt
+│   │   └── WebFragment.kt
+│   └── main/
+│       └── MainActivity.kt
+└── res/
+    ├── layout/
+    │   └── activity_main.xml
+    └── xml/
+        └── network_security_config.xml</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FULL KanbanBoardApplication.kt REFERENCE
+         ============================================================ -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Reference</div>
+          <h2 class="section-title">Final KanbanBoardApplication.kt</h2>
+          <p class="section-sub">The complete Application class after all steps.</p>
+        </div>
+        <div class="about-prose">
+          <pre><code class="language-kotlin">package com.example.hotwirenativeworkshop
+
+import android.app.Application
+import com.example.hotwirenativeworkshop.bridge.ButtonComponent
+import com.example.hotwirenativeworkshop.bridge.FormComponent
+import com.example.hotwirenativeworkshop.features.web.WebBottomSheetFragment
+import com.example.hotwirenativeworkshop.features.web.WebFragment
+import dev.hotwire.core.BuildConfig
+import dev.hotwire.core.bridge.BridgeComponentFactory
+import dev.hotwire.core.bridge.KotlinXJsonConverter
+import dev.hotwire.core.config.Hotwire
+import dev.hotwire.core.turbo.config.PathConfiguration
+import dev.hotwire.navigation.config.defaultFragmentDestination
+import dev.hotwire.navigation.config.registerBridgeComponents
+import dev.hotwire.navigation.config.registerFragmentDestinations
+
+
+class KanbanBoardApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        configureApp()
+    }
+
+    private fun configureApp() {
+        Hotwire.loadPathConfiguration(
+            context = this,
+            location = PathConfiguration.Location(
+                assetFilePath = "json/path-configuration.json",
+                remoteFileUrl = "${KanbanBoard.current.url}/configurations/android_v1.json"
+            )
+        )
+
+        // Set the default fragment destination
+        Hotwire.defaultFragmentDestination = WebFragment::class
+
+        // Register fragment destinations
+        Hotwire.registerFragmentDestinations(
+            WebFragment::class,
+            WebBottomSheetFragment::class
+        )
+
+        // Register bridge components
+        Hotwire.registerBridgeComponents(
+            BridgeComponentFactory("button", ::ButtonComponent),
+            BridgeComponentFactory("form", ::FormComponent)
+        )
+
+        // Set configuration options
+        Hotwire.config.debugLoggingEnabled = BuildConfig.DEBUG
+        Hotwire.config.webViewDebuggingEnabled = BuildConfig.DEBUG
+        Hotwire.config.jsonConverter = KotlinXJsonConverter()
+        Hotwire.config.applicationUserAgentPrefix = "Kanban Boards;"
+    }
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer>
+    <div class="container">
+      <div class="footer-cta">
+        <a class="btn btn-accent" href="./">Back to Workshop Overview</a>
+      </div>
+      <p class="footer-credit">Hotwire Native Workshop &middot; Ruby Community Conference 2026 &middot; Organized by <a href="https://www.visuality.pl/" target="_blank" rel="noopener">Visuality</a></p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

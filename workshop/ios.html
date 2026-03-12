@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iOS Workshop — Hotwire Native</title>
+
+  <!-- Prism.js — Tomorrow Night theme -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-swift.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+  <!-- Ambient gradient blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-eyebrow">
+        <a class="rcc-badge" href="https://www.rubycommunityconference.com/" target="_blank" rel="noopener">
+          <img src="../images/rcc-logo.svg" alt="Ruby Community Conference" class="rcc-logo">
+          <span>Ruby Community Conference 2026</span>
+        </a>
+      </div>
+      <h1 class="hero-title">iOS Workshop</h1>
+      <p class="hero-tagline">Hotwire Native for iOS — Step by Step</p>
+      <p class="hero-sub">Follow along with each step to build a fully working Hotwire Native iOS app wrapping the Kanban Board Rails application. Each step maps directly to a commit in the <a href="https://github.com/arepnikov/hotwire-native-workshop-ios" target="_blank" rel="noopener" style="color: var(--accent);">iOS repository</a>.</p>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       STICKY NAV
+       ============================================================ -->
+  <nav class="sticky-nav" aria-label="Workshop navigation">
+    <div class="container">
+      <ul class="nav-links">
+        <li><a href="#step1">1. Project Init</a></li>
+        <li><a href="#step2">2. Hotwire Setup</a></li>
+        <li><a href="#step3">3. Path Config</a></li>
+        <li><a href="#step4">4. App Config</a></li>
+        <li><a href="#step5">5. Environments</a></li>
+        <li><a href="#step6">6. HTTP Access</a></li>
+        <li><a href="#step7">7. Local Mode</a></li>
+        <li><a href="#step8">8. Button Bridge</a></li>
+        <li><a href="#step9">9. Modal Config</a></li>
+        <li><a href="#step10">10. Replace Nav</a></li>
+        <li><a href="#step11">11. Form Scaffold</a></li>
+        <li><a href="#step12">12. Form Complete</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ============================================================
+         INTRO
+         ============================================================ -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Before You Start</div>
+          <h2 class="section-title">Prerequisites</h2>
+        </div>
+        <div class="about-prose">
+          <p>Make sure you have completed the <a href="./#setup">Pre-Workshop Setup</a> — Xcode installed, the Rails app running at <code>localhost:3000</code>, and the iOS repo cloned.</p>
+          <div class="callout">
+            <h4>Branch structure</h4>
+            <p>The iOS repo has 4 branches that build on each other:</p>
+            <ul>
+              <li><strong>main</strong> — Steps 1–6: Project setup, Hotwire config, path configuration, environments, HTTP access</li>
+              <li><strong>button-component</strong> — Steps 7–8: Switch to local, ButtonComponent bridge</li>
+              <li><strong>new-board-modal</strong> — Steps 9–10: Path configuration for modals and replace presentation</li>
+              <li><strong>form-component</strong> — Steps 11–12: FormComponent bridge with submit enable/disable</li>
+            </ul>
+            <p>You can check out any branch to see the state of the app at that point: <code>git checkout button-component</code></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 1: init
+         ============================================================ -->
+    <section id="step1" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 1 · Branch: main</div>
+          <h2 class="section-title">Create the iOS Project</h2>
+          <p class="section-sub">Commit: <code>init</code></p>
+        </div>
+        <div class="details-list">
+          <details open>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">1</span>
+                <span class="module-title">New iOS Project from Xcode</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Create a new project in Xcode:</p>
+              <ul>
+                <li>Open Xcode &rarr; <strong>Create New Project</strong> &rarr; <strong>App</strong></li>
+                <li>Product Name: <code>HotwireKanban</code></li>
+                <li>Organization Identifier: <code>com.example</code></li>
+                <li>Interface: <strong>Storyboard</strong></li>
+                <li>Language: <strong>Swift</strong></li>
+              </ul>
+
+              <p>This generates the standard scaffold: <code>AppDelegate.swift</code>, <code>SceneDelegate.swift</code>, <code>ViewController.swift</code>, storyboards, etc.</p>
+
+              <span class="code-label">HotwireKanban/AppDelegate.swift (generated)</span>
+              <pre><code class="language-swift">import UIKit
+
+@main
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Override point for customization after application launch.
+        return true
+    }
+
+    // MARK: UISceneSession Lifecycle
+
+    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+    }
+
+    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set&lt;UISceneSession&gt;) {
+    }
+}</code></pre>
+
+              <span class="code-label">HotwireKanban/SceneDelegate.swift (generated)</span>
+              <pre><code class="language-swift">import UIKit
+
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+
+    var window: UIWindow?
+
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        guard let _ = (scene as? UIWindowScene) else { return }
+    }
+
+    func sceneDidDisconnect(_ scene: UIScene) {
+    }
+
+    func sceneDidBecomeActive(_ scene: UIScene) {
+    }
+
+    func sceneWillResignActive(_ scene: UIScene) {
+    }
+
+    func sceneWillEnterForeground(_ scene: UIScene) {
+    }
+
+    func sceneDidEnterBackground(_ scene: UIScene) {
+    }
+}</code></pre>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                You have a blank iOS app project ready to integrate Hotwire Native.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 2: Base iOS app
+         ============================================================ -->
+    <section id="step2" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 2 · Branch: main</div>
+          <h2 class="section-title">Add Hotwire Native Package</h2>
+          <p class="section-sub">Commit: <code>Base iOS app</code></p>
+        </div>
+        <div class="details-list">
+          <details open>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">1</span>
+                <span class="module-title">Add the HotwireNative Swift Package</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>In Xcode:</p>
+              <ol>
+                <li>Go to <strong>File</strong> &rarr; <strong>Add Package Dependencies...</strong></li>
+                <li>Enter the URL: <code>https://github.com/hotwired/hotwire-native-ios</code></li>
+                <li>Set version rule to <strong>Up to Next Major Version</strong> from <code>1.2.2</code></li>
+                <li>Click <strong>Add Package</strong></li>
+                <li>Select <strong>HotwireNative</strong> library and click <strong>Add Package</strong></li>
+              </ol>
+            </div>
+          </details>
+
+          <details open>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">2</span>
+                <span class="module-title">Update SceneDelegate with Navigator</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Replace the contents of <code>SceneDelegate.swift</code> with the Hotwire Navigator setup:</p>
+
+              <span class="code-label">HotwireKanban/SceneDelegate.swift</span>
+              <pre><code class="language-swift">import HotwireNative
+import UIKit
+
+let rootURL = URL(string: "https://hotwire-native-demo.dev")!
+
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    var window: UIWindow?
+
+    private let navigator = Navigator(configuration: .init(
+        name: "main",
+        startLocation: rootURL
+    ))
+
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        window?.rootViewController = navigator.rootViewController
+        navigator.start()
+    }
+}</code></pre>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                Your app now loads the Hotwire Native demo site. Run the app to see it in action!
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 3: Add path-configuration.json
+         ============================================================ -->
+    <section id="step3" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 3 · Branch: main</div>
+          <h2 class="section-title">Add Path Configuration</h2>
+          <p class="section-sub">Commit: <code>Add path-configuration.json</code></p>
+        </div>
+        <div class="details-list">
+          <details open>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">1</span>
+                <span class="module-title">Create path-configuration.json</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Create a new file <code>path-configuration.json</code> in your <code>HotwireKanban</code> folder. Make sure to add it to the target in Xcode.</p>
+
+              <span class="code-label">HotwireKanban/path-configuration.json</span>
+              <pre><code class="language-json">{
+  "settings": {},
+  "rules": [
+    {
+      "patterns": [
+        ".*"
+      ],
+      "properties": {
+        "context": "default",
+        "pull_to_refresh_enabled": true
+      }
+    },
+    {
+      "patterns": [
+        "/new$"
+      ],
+      "properties": {
+        "context": "modal",
+        "pull_to_refresh_enabled": false
+      }
+    }
+  ]
+}</code></pre>
+            </div>
+          </details>
+
+          <details open>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">2</span>
+                <span class="module-title">Load Path Configuration in AppDelegate</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Update <code>AppDelegate.swift</code> to load the path configuration:</p>
+
+              <span class="code-label">HotwireKanban/AppDelegate.swift</span>
+              <pre><code class="language-swift">import HotwireNative
+import UIKit
+
+@main
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+        Hotwire.loadPathConfiguration(from: [
+            .file(Bundle.main.url(forResource: "path-configuration", withExtension: "json")!)
+        ])
+
+        return true
+    }
+
+    // MARK: UISceneSession Lifecycle
+
+    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+    }
+
+    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set&lt;UISceneSession&gt;) {
+    }
+}</code></pre>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                Path rules now control navigation behavior — URLs ending in <code>/new</code> open as modals.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 4: App configuration
+         ============================================================ -->
+    <section id="step4" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 4 · Branch: main</div>
+          <h2 class="section-title">App Configuration</h2>
+          <p class="section-sub">Commit: <code>App configuration</code></p>
+        </div>
+        <div class="details-list">
+          <details open>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">1</span>
+                <span class="module-title">Add Debug Logging and User Agent</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Add configuration options for debugging and custom User-Agent:</p>
+
+              <span class="code-label">HotwireKanban/AppDelegate.swift (add after loadPathConfiguration)</span>
+              <pre><code class="language-swift">        // Set configuration options
+        #if DEBUG
+        Hotwire.config.debugLoggingEnabled = true
+        #endif
+
+        Hotwire.config.applicationUserAgentPrefix = "Kanban Boards;"</code></pre>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                Debug logging is enabled during development, and your app identifies itself with a custom User-Agent that the Rails server can detect.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 5: Remote and Local URL support
+         ============================================================ -->
+    <section id="step5" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 5 · Branch: main</div>
+          <h2 class="section-title">Environment Support</h2>
+          <p class="section-sub">Commit: <code>introduce Remote and Local url support</code></p>
+        </div>
+        <div class="details-list">
+          <details open>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">1</span>
+                <span class="module-title">Create KanbanBoard.swift</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Create a new file <code>KanbanBoard.swift</code> to manage environment switching:</p>
+
+              <span class="code-label">HotwireKanban/KanbanBoard.swift</span>
+              <pre><code class="language-swift">import Foundation
+
+enum KanbanBoard {
+    // Update this to choose which demo is run
+    static let current: Environment = .remote
+
+    enum Environment {
+        case remote
+        case local
+
+        var url: URL {
+            switch self {
+            case .remote:
+                return URL(string: "https://hotwire-native-demo.dev")!
+            case .local:
+                return URL(string: "http://localhost:3000")!
+            }
+        }
+    }
+}</code></pre>
+            </div>
+          </details>
+
+          <details open>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">2</span>
+                <span class="module-title">Update SceneDelegate to use KanbanBoard</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Update the navigator to use the environment URL:</p>
+
+              <span class="code-label">HotwireKanban/SceneDelegate.swift</span>
+              <pre><code class="language-swift">import HotwireNative
+import UIKit
+
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    var window: UIWindow?
+
+    private let navigator = Navigator(configuration: .init(
+        name: "main",
+        startLocation: KanbanBoard.current.url
+    ))
+
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        window?.rootViewController = navigator.rootViewController
+        navigator.start()
+    }
+}</code></pre>
+            </div>
+          </details>
+
+          <details open>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">3</span>
+                <span class="module-title">Add Server-Side Path Configuration</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Update AppDelegate to also load path configuration from the server:</p>
+
+              <span class="code-label">HotwireKanban/AppDelegate.swift (update loadPathConfiguration)</span>
+              <pre><code class="language-swift">        Hotwire.loadPathConfiguration(from: [
+            .file(Bundle.main.url(forResource: "path-configuration", withExtension: "json")!),
+            .server(URL(string: "\(KanbanBoard.current.url)/configurations/ios_v1.json")!)
+        ])</code></pre>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                You can now switch between remote and local environments by changing <code>KanbanBoard.current</code>. The app loads path configuration from both local file and server.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 6: Allow http access on localhost
+         ============================================================ -->
+    <section id="step6" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 6 · Branch: main</div>
+          <h2 class="section-title">Allow HTTP Access</h2>
+          <p class="section-sub">Commit: <code>Allow http access on localhost</code></p>
+        </div>
+        <div class="details-list">
+          <details open>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">1</span>
+                <span class="module-title">Update Info.plist for Local Networking</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>iOS blocks HTTP connections by default (App Transport Security). To connect to your local Rails server, update <code>Info.plist</code>:</p>
+
+              <span class="code-label">HotwireKanban/Info.plist (add to dict)</span>
+              <pre><code class="language-markup">&lt;key&gt;NSAppTransportSecurity&lt;/key&gt;
+&lt;dict&gt;
+    &lt;key&gt;NSAllowsLocalNetworking&lt;/key&gt;
+    &lt;true/&gt;
+&lt;/dict&gt;</code></pre>
+
+              <p>Or in Xcode: select <code>Info.plist</code>, add a new row <code>App Transport Security Settings</code>, and set <code>Allow Local Networking</code> to <code>YES</code>.</p>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                Your app can now connect to <code>http://localhost:3000</code> for local development.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 7: Switch Environment to Local
+         ============================================================ -->
+    <section id="step7" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 7 · Branch: button-component</div>
+          <h2 class="section-title">Switch to Local Environment</h2>
+          <p class="section-sub">Commit: <code>Switch Environment from Remote to Local</code></p>
+        </div>
+        <div class="details-list">
+          <details open>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">1</span>
+                <span class="module-title">Change to Local Environment</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Update <code>KanbanBoard.swift</code> to use the local server:</p>
+
+              <span class="code-label">HotwireKanban/KanbanBoard.swift</span>
+              <pre><code class="language-swift">import Foundation
+
+enum KanbanBoard {
+    // Update this to choose which demo is run
+    static let current: Environment = .local  // Changed from .remote
+
+    enum Environment {
+        case remote
+        case local
+
+        var url: URL {
+            switch self {
+            case .remote:
+                return URL(string: "https://hotwire-native-demo.dev")!
+            case .local:
+                return URL(string: "http://localhost:3000")!
+            }
+        }
+    }
+}</code></pre>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                Your app now connects to your local Rails server at <code>http://localhost:3000</code>. Make sure the Rails app is running!
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 8: ButtonComponent
+         ============================================================ -->
+    <section id="step8" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 8 · Branch: button-component</div>
+          <h2 class="section-title">ButtonComponent Bridge</h2>
+          <p class="section-sub">Commit: <code>ButtonComponent Swift component added</code></p>
+        </div>
+        <div class="details-list">
+          <details open>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">1</span>
+                <span class="module-title">Create Bridge Group</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>In Xcode, create a new group called <code>Bridge</code> inside your <code>HotwireKanban</code> folder to organize bridge components.</p>
+            </div>
+          </details>
+
+          <details open>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">2</span>
+                <span class="module-title">Create ButtonComponent.swift</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Create <code>ButtonComponent.swift</code> in the Bridge group:</p>
+
+              <span class="code-label">HotwireKanban/Bridge/ButtonComponent.swift</span>
+              <pre><code class="language-swift">import HotwireNative
+import UIKit
+
+final class ButtonComponent: BridgeComponent {
+    nonisolated override static var name: String { "button" }
+
+    private var barButtonItem: UIBarButtonItem?
+
+    private var viewController: UIViewController? {
+        delegate?.destination as? UIViewController
+    }
+
+    override func onReceive(message: Message) {
+        let event = message.event
+
+        switch event {
+        case "connect":
+            handleConnectEvent(message: message)
+        default:
+            print("ButtonComponent: Unknown event \(event)")
+        }
+    }
+
+    private func handleConnectEvent(message: Message) {
+        guard let data: MessageData = message.data() else { return }
+        showToolbarButton(title: data.title)
+    }
+
+    private func showToolbarButton(title: String) {
+        guard let viewController = viewController else { return }
+
+        let action = UIAction { [weak self] _ in
+            self?.performButtonClick()
+        }
+
+        barButtonItem = UIBarButtonItem(title: title, primaryAction: action)
+        barButtonItem?.tintColor = UIColor(red: 1.0, green: 0.4, blue: 0.0, alpha: 1.0) // #FF6600
+
+        viewController.navigationItem.rightBarButtonItem = barButtonItem
+    }
+
+    private func performButtonClick() {
+        reply(to: "connect")
+    }
+}
+
+private extension ButtonComponent {
+    struct MessageData: Decodable {
+        let title: String
+    }
+}</code></pre>
+            </div>
+          </details>
+
+          <details open>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">3</span>
+                <span class="module-title">Register ButtonComponent</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Update <code>AppDelegate.swift</code> to register the bridge component:</p>
+
+              <span class="code-label">HotwireKanban/AppDelegate.swift (add before return true)</span>
+              <pre><code class="language-swift">        // Register bridge components
+        Hotwire.registerBridgeComponents([
+            ButtonComponent.self
+        ])</code></pre>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                The ButtonComponent receives messages from the web and displays a native toolbar button. When tapped, it sends a reply back to the Stimulus controller.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 9: Modal path configuration
+         ============================================================ -->
+    <section id="step9" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 9 · Branch: new-board-modal</div>
+          <h2 class="section-title">Modal Path Configuration</h2>
+          <p class="section-sub">Commit: <code>/boards/new in Sheet Modal</code></p>
+        </div>
+        <div class="details-list">
+          <details open>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">1</span>
+                <span class="module-title">Update Path Pattern for Boards Modal</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Update the modal rule to specifically match <code>/boards/new</code>:</p>
+
+              <span class="code-label">HotwireKanban/path-configuration.json</span>
+              <pre><code class="language-json">{
+  "settings": {},
+  "rules": [
+    {
+      "patterns": [
+        ".*"
+      ],
+      "properties": {
+        "context": "default",
+        "pull_to_refresh_enabled": true
+      }
+    },
+    {
+      "patterns": [
+        "/boards/new$"
+      ],
+      "properties": {
+        "context": "modal",
+        "pull_to_refresh_enabled": false
+      }
+    }
+  ]
+}</code></pre>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                The "New Board" form now opens as a modal sheet instead of a pushed view.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 10: Replace /boards navigation
+         ============================================================ -->
+    <section id="step10" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 10 · Branch: new-board-modal</div>
+          <h2 class="section-title">Replace Navigation</h2>
+          <p class="section-sub">Commit: <code>replace /boards</code></p>
+        </div>
+        <div class="details-list">
+          <details open>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">1</span>
+                <span class="module-title">Add Replace Rule for Boards Index</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Add a rule to replace the current view when navigating to the boards index (after creating a new board, we want to go back to the list without stacking views):</p>
+
+              <span class="code-label">HotwireKanban/path-configuration.json</span>
+              <pre><code class="language-json">{
+  "settings": {},
+  "rules": [
+    {
+      "patterns": [
+        ".*"
+      ],
+      "properties": {
+        "context": "default",
+        "pull_to_refresh_enabled": true
+      }
+    },
+    {
+      "patterns": [
+        "/boards$"
+      ],
+      "properties": {
+        "context": "default",
+        "presentation": "replace",
+        "pull_to_refresh_enabled": true
+      }
+    },
+    {
+      "patterns": [
+        "/boards/new$"
+      ],
+      "properties": {
+        "context": "modal",
+        "pull_to_refresh_enabled": false
+      }
+    }
+  ]
+}</code></pre>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                After creating a new board, the app replaces the current view with the boards list instead of pushing a new view onto the stack.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 11: FormComponent scaffold
+         ============================================================ -->
+    <section id="step11" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 11 · Branch: form-component</div>
+          <h2 class="section-title">FormComponent Scaffold</h2>
+          <p class="section-sub">Commit: <code>Add FormComponent scaffold</code></p>
+        </div>
+        <div class="details-list">
+          <details open>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">1</span>
+                <span class="module-title">Create FormComponent.swift Scaffold</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Create the initial scaffold for <code>FormComponent.swift</code> in the Bridge group:</p>
+
+              <span class="code-label">HotwireKanban/Bridge/FormComponent.swift</span>
+              <pre><code class="language-swift">import HotwireNative
+import UIKit
+
+final class FormComponent: BridgeComponent {
+    nonisolated override static var name: String { "form" }
+
+    override func onReceive(message: Message) {
+        // TODO: Implement
+    }
+}</code></pre>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                You have a skeleton FormComponent ready to implement.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STEP 12: FormComponent implementation
+         ============================================================ -->
+    <section id="step12" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Step 12 · Branch: form-component</div>
+          <h2 class="section-title">FormComponent Implementation</h2>
+          <p class="section-sub">Commit: <code>FormComponent implemented</code></p>
+        </div>
+        <div class="details-list">
+          <details open>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">1</span>
+                <span class="module-title">Complete FormComponent Implementation</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Replace the scaffold with the full implementation:</p>
+
+              <span class="code-label">HotwireKanban/Bridge/FormComponent.swift</span>
+              <pre><code class="language-swift">import HotwireNative
+import UIKit
+
+final class FormComponent: BridgeComponent {
+    nonisolated override static var name: String { "form" }
+
+    private var submitBarButtonItem: UIBarButtonItem?
+
+    private var viewController: UIViewController? {
+        delegate?.destination as? UIViewController
+    }
+
+    override func onReceive(message: Message) {
+        let event = message.event
+
+        switch event {
+        case "connect":
+            handleConnectEvent(message: message)
+        case "submitEnabled":
+            handleSubmitEnabled()
+        case "submitDisabled":
+            handleSubmitDisabled()
+        default:
+            print("FormComponent: Unknown event \(event)")
+        }
+    }
+
+    private func handleConnectEvent(message: Message) {
+        guard let data: MessageData = message.data() else { return }
+        showToolbarButton(title: data.submitTitle)
+    }
+
+    private func showToolbarButton(title: String) {
+        guard let viewController = viewController else { return }
+
+        let action = UIAction { [weak self] _ in
+            self?.performSubmit()
+        }
+
+        submitBarButtonItem = UIBarButtonItem(title: title, primaryAction: action)
+        submitBarButtonItem?.tintColor = UIColor(red: 1.0, green: 0.4, blue: 0.0, alpha: 1.0) // #FF6600
+
+        viewController.navigationItem.rightBarButtonItem = submitBarButtonItem
+    }
+
+    private func handleSubmitEnabled() {
+        submitBarButtonItem?.isEnabled = true
+    }
+
+    private func handleSubmitDisabled() {
+        submitBarButtonItem?.isEnabled = false
+    }
+
+    private func performSubmit() {
+        reply(to: "connect")
+    }
+}
+
+private extension FormComponent {
+    struct MessageData: Decodable {
+        let submitTitle: String
+    }
+}</code></pre>
+            </div>
+          </details>
+
+          <details open>
+            <summary>
+              <div class="module-meta">
+                <span class="module-num">2</span>
+                <span class="module-title">Register FormComponent</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <p>Update <code>AppDelegate.swift</code> to register both components:</p>
+
+              <span class="code-label">HotwireKanban/AppDelegate.swift</span>
+              <pre><code class="language-swift">        // Register bridge components
+        Hotwire.registerBridgeComponents([
+            ButtonComponent.self,
+            FormComponent.self
+        ])</code></pre>
+
+              <div class="module-outcome">
+                <strong>Outcome</strong>
+                The FormComponent handles form submissions with a native toolbar button. It enables/disables based on form validation and submits the form when tapped.
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FINAL PROJECT STRUCTURE
+         ============================================================ -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Reference</div>
+          <h2 class="section-title">Final Project Structure</h2>
+        </div>
+        <div class="details-list">
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-title">Complete File Structure</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <pre><code class="language-markup">HotwireKanban/
+├── HotwireKanban.xcodeproj/
+├── HotwireKanban/
+│   ├── AppDelegate.swift
+│   ├── SceneDelegate.swift
+│   ├── KanbanBoard.swift
+│   ├── Info.plist
+│   ├── path-configuration.json
+│   ├── Bridge/
+│   │   ├── ButtonComponent.swift
+│   │   └── FormComponent.swift
+│   ├── Assets.xcassets/
+│   └── Base.lproj/
+│       ├── LaunchScreen.storyboard
+│       └── Main.storyboard
+├── HotwireKanbanTests/
+└── HotwireKanbanUITests/</code></pre>
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-title">Complete AppDelegate.swift</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <span class="code-label">HotwireKanban/AppDelegate.swift</span>
+              <pre><code class="language-swift">import HotwireNative
+import UIKit
+
+@main
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+        Hotwire.loadPathConfiguration(from: [
+            .file(Bundle.main.url(forResource: "path-configuration", withExtension: "json")!),
+            .server(URL(string: "\(KanbanBoard.current.url)/configurations/ios_v1.json")!)
+        ])
+
+        // Set configuration options
+        #if DEBUG
+        Hotwire.config.debugLoggingEnabled = true
+        #endif
+
+        Hotwire.config.applicationUserAgentPrefix = "Kanban Boards;"
+
+        // Register bridge components
+        Hotwire.registerBridgeComponents([
+            ButtonComponent.self,
+            FormComponent.self
+        ])
+
+        return true
+    }
+
+    // MARK: UISceneSession Lifecycle
+
+    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+    }
+
+    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set&lt;UISceneSession&gt;) {
+    }
+}</code></pre>
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              <div class="module-meta">
+                <span class="module-title">Complete path-configuration.json</span>
+              </div>
+            </summary>
+            <div class="details-body">
+              <span class="code-label">HotwireKanban/path-configuration.json</span>
+              <pre><code class="language-json">{
+  "settings": {},
+  "rules": [
+    {
+      "patterns": [
+        ".*"
+      ],
+      "properties": {
+        "context": "default",
+        "pull_to_refresh_enabled": true
+      }
+    },
+    {
+      "patterns": [
+        "/boards$"
+      ],
+      "properties": {
+        "context": "default",
+        "presentation": "replace",
+        "pull_to_refresh_enabled": true
+      }
+    },
+    {
+      "patterns": [
+        "/boards/new$"
+      ],
+      "properties": {
+        "context": "modal",
+        "pull_to_refresh_enabled": false
+      }
+    }
+  ]
+}</code></pre>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer>
+    <div class="container">
+      <h2 class="footer-title">That's a Wrap!</h2>
+      <p class="footer-sub">You've built a native iOS app powered by your Rails server.</p>
+      <div class="footer-cta">
+        <a class="btn btn-accent" href="./">Back to Workshop Home</a>
+      </div>
+      <p class="footer-credit">
+        Made with care by <a href="https://github.com/arepnikov">Alex</a> &amp; <a href="https://github.com/qiun">Sebastian</a> for <a href="https://www.rubycommunityconference.com/">RCC 2026</a>.
+      </p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
