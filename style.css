@@ -771,6 +771,63 @@ code[class*="language-"] {
   border: 1px solid rgba(61, 220, 132, 0.2);
 }
 
+.side-badge--ios {
+  background: rgba(0, 122, 255, 0.1);
+  color: #5ac8fa;
+  border: 1px solid rgba(0, 122, 255, 0.2);
+}
+
+/* ============================================================
+   PLATFORM TABS
+   ============================================================ */
+.platform-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0 12px;
+}
+
+.tab-btn {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: 6px;
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-sans);
+}
+
+.tab-btn:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.15);
+}
+
+.tab-btn.active {
+  color: #fff;
+}
+
+.tab-btn.active[data-tab="android"] {
+  background: rgba(61, 220, 132, 0.15);
+  border-color: rgba(61, 220, 132, 0.3);
+  color: #6fcf97;
+}
+
+.tab-btn.active[data-tab="ios"] {
+  background: rgba(0, 122, 255, 0.15);
+  border-color: rgba(0, 122, 255, 0.3);
+  color: #5ac8fa;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
 /* ============================================================
    SCREENSHOT DETAILS
    ============================================================ */

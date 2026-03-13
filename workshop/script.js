@@ -78,3 +78,32 @@ if (sections.length && navLinks.length) {
 
   sections.forEach((section) => observer.observe(section));
 }
+
+// ============================================================
+// PLATFORM TABS
+// ============================================================
+document.querySelectorAll('.platform-tabs').forEach(tabGroup => {
+  const buttons = tabGroup.querySelectorAll('.tab-btn')
+  // Find sibling tab-content elements (same parent)
+  const wrapper = tabGroup.parentElement
+  const contents = wrapper.querySelectorAll(':scope > .tab-content')
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const platform = btn.dataset.tab
+
+      // Update button states
+      buttons.forEach(b => b.classList.remove('active'))
+      btn.classList.add('active')
+
+      // Update content visibility
+      contents.forEach(content => {
+        if (content.dataset.platform === platform) {
+          content.classList.add('active')
+        } else {
+          content.classList.remove('active')
+        }
+      })
+    })
+  })
+})
